@@ -100,148 +100,177 @@ class _CompleteProfileState extends State<CompleteProfile> {
     print('Selected Course code: ${selectedCourseData['fcoursename']}');
   }
 
+  var name;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   systemOverlayStyle: const SystemUiOverlayStyle(
-      //     // Status bar color
-      //     statusBarColor: Colors.white,
-      //     // Status bar brightness (optional)
-      //     statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-      //   ),
-      //   backgroundColor: Colors.white,
-      //   bottomOpacity: 0.0,
-      //   elevation: 0.0,
-      //   centerTitle: true,
-      //   title: const Text(
-      //     "Studygram",
-      //     style: TextStyle(
-      //         color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700),
-      //   ),
-      // ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                addVerticalSpace(20),
-                Center(
-                  child: Text(
-                    'Complete Profile',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.green),
-                  ),
-                ),
-                addVerticalSpace(20),
-                Text(
-                  'Select University:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 24),
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 4.0,
-                  children: tags.map((tag) {
-                    final String tagText = tag['uniname']!;
-                    final String selectedTagName = tag['funiname']!;
-                    return ChoiceChip(
-                      label: Text(
-                        tagText,
-                        style: TextStyle(
-                          color: selectedTag == tagText
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                      selected: selectedTag == tagText,
-                      selectedColor: Colors.green,
-                      onSelected: (isSelected) {
-                        handleTagSelection(tagText, selectedTagName);
-                      },
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 24),
-                Text(
-                  'Select Course:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 24),
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 2.0,
-                  children: courses.map((course) {
-                    final String courseName = course['coursename']!;
-                    final String fcourseName = course['fcoursename']!;
-                    return ChoiceChip(
-                      label: Text(
-                        courseName,
-                        style: TextStyle(
-                          color: selectedCourse == courseName
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                      selected: selectedCourse == courseName,
-                      selectedColor: Colors.green,
-                      onSelected: (isSelected) {
-                        handleCourseSelection(courseName, fcourseName);
-                      },
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: 150,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        // appBar: AppBar(
+        //   systemOverlayStyle: const SystemUiOverlayStyle(
+        //     // Status bar color
+        //     statusBarColor: Colors.white,
+        //     // Status bar brightness (optional)
+        //     statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+        //   ),
+        //   backgroundColor: Colors.white,
+        //   bottomOpacity: 0.0,
+        //   elevation: 0.0,
+        //   centerTitle: true,
+        //   title: const Text(
+        //     "Studygram",
+        //     style: TextStyle(
+        //         color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700),
+        //   ),
+        // ),
+        body: Center(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 10),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  addVerticalSpace(20),
+                  Center(
+                    child: Text(
+                      'Complete Profile',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.green),
                     ),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        print({selectedTagName, selectedCourseName});
-                        SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                        await pref.setString('university', selectedTagName);
-                        await pref.setString('course', selectedCourseName);
-                        await pref.setString('coursename', selectedCourse);
-                        await pref.setString('universityname', selectedTag);
-                        await pref.setBool('user', true);
-                        Get.to(() => MainPage());
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          'Continue',
+                  ),
+                  addVerticalSpace(20),
+                   Text(
+                    'Name:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  TextFormField(
+                    initialValue: "",
+                    // //controller: nameController,
+                    onChanged: (val) {
+                      name = val;
+                    },
+                    decoration: const InputDecoration(
+                        labelText: 'Name ',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green))),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Select University:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: tags.map((tag) {
+                      final String tagText = tag['uniname']!;
+                      final String selectedTagName = tag['funiname']!;
+                      return ChoiceChip(
+                        label: Text(
+                          tagText,
                           style: TextStyle(
-                            fontSize: 18,
+                            color: selectedTag == tagText
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        selected: selectedTag == tagText,
+                        selectedColor: Colors.green,
+                        onSelected: (isSelected) {
+                          handleTagSelection(tagText, selectedTagName);
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Select Course:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 2.0,
+                    children: courses.map((course) {
+                      final String courseName = course['coursename']!;
+                      final String fcourseName = course['fcoursename']!;
+                      return ChoiceChip(
+                        label: Text(
+                          courseName,
+                          style: TextStyle(
+                            color: selectedCourse == courseName
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        selected: selectedCourse == courseName,
+                        selectedColor: Colors.green,
+                        onSelected: (isSelected) {
+                          handleCourseSelection(courseName, fcourseName);
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: 150,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          print({selectedTagName, selectedCourseName});
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          await pref.setString('university', selectedTagName);
+                          await pref.setString('course', selectedCourseName);
+                          await pref.setString('coursename', selectedCourse);
+                          await pref.setString('universityname', selectedTag);
+                          await pref.setBool('user', true);
+                          Get.to(() => MainPage());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            'Continue',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -3,12 +3,10 @@ import 'package:get/get.dart';
 import 'package:studygram/components/appbar/appbarmain.dart';
 import 'package:studygram/components/sidebar/sidebar.dart';
 import 'package:studygram/pages/splashscreen/splashscreen.dart';
-import 'package:studygram/pages/update/updatehome.dart';
+import 'package:studygram/screens/community/community.dart';
 import 'package:studygram/screens/contribute/contribute.dart';
 import 'package:studygram/screens/home/home.dart';
 import 'package:studygram/screens/notification/notifications.dart';
-import 'package:studygram/screens/university/unitemp.dart';
-import 'package:studygram/screens/university/university.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +31,6 @@ class MyApp extends StatelessWidget {
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -42,8 +39,8 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
   final screens = [
     Home(),
-    UniversityTemp(
-      title: 'University',
+    Community(
+      title: 'Community',
     ),
     Notifications(
       title: 'notification',
@@ -84,8 +81,7 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.school), label: 'University'),
+            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Community'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.notifications_active), label: 'Notifications'),
             BottomNavigationBarItem(

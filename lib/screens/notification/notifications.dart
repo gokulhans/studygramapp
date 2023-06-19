@@ -1,182 +1,130 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:studygram/screens/category/category.dart';
-import 'package:http/http.dart' as http;
-import 'package:studygram/screens/files/webview.dart';
-import 'package:studygram/screens/subject/subject.dart';
-import 'package:studygram/utils/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:studygram/components/indicator/progress_indicator.dart';
+import 'package:studygram/utils/color_constants.dart';
 
-class Notifications extends StatelessWidget {
-  const Notifications({Key? key, required this.title}) : super(key: key);
-  final String title;
+class Notifications extends StatefulWidget {
+  var title;
+  Notifications({super.key, required this.title});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Sublist(title: title),
+  State<Notifications> createState() => _NotificationsState();
+}
+
+class _NotificationsState extends State<Notifications> {
+  InAppWebViewController? webViewController;
+  PullToRefreshController? pullToRefreshController;
+  String url = "";
+  String initialurl = "";
+  double progress = 0;
+  final urlController = TextEditingController();
+  var isLoading = false;
+  @override
+  void initState() {
+    initialurl = "https://acadamix.wordpress.com/category/calicut-university/notifications/";
+    super.initState();
+    pullToRefreshController = PullToRefreshController(
+      options: PullToRefreshOptions(
+          color: ColorConstants.textclr,
+          backgroundColor: ColorConstants.appbgclr),
+      onRefresh: () async {
+        webViewController?.reload();
+      },
     );
   }
-}
 
-class Sublist extends StatefulWidget {
-  const Sublist({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _SublistState createState() => _SublistState();
-}
-
-class _SublistState extends State<Sublist> {
-  Future<List<Map<String, dynamic>>> fetchCourses() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String useruniversity = prefs.getString('universityname')!;
-    final response = await http.get(Uri.parse('${apidomain}noti/${useruniversity}'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      List<Map<String, dynamic>> notifications = data
-          .map((item) => {
-                '_id': item['_id'],
-                'title': item['title'],
-                'desc': item['desc'],
-                'university': item['university'],
-                'link': item['link'],
-              })
-          .toList();
-      return notifications;
-    } else {
-      throw Exception('Failed to fetch notifications');
-    }
-  }
-
-  // var endpoint = widget.title;
-  // var endpoint = 'Bca/Notifications-1';
   @override
   Widget build(BuildContext context) {
-    var argumentData = Get.arguments;
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: FutureBuilder<List<Map<String, dynamic>>>(
-          future: fetchCourses(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SpinKitCircle(
-                  size: 80,
-                  color: Colors.green,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: const Text('Select Subject'),
+        //   systemOverlayStyle: const SystemUiOverlayStyle(
+        //     statusBarColor: Colors.green,
+        //     statusBarIconBrightness: Brightness.dark,
+        //   ),
+        // ),
+        body: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            InAppWebView(
+                onWebViewCreated: (controller) {
+                  webViewController = controller;
+                },
+                initialOptions: InAppWebViewGroupOptions(
+                  android: AndroidInAppWebViewOptions(
+                    geolocationEnabled: true,
+                  ),
                 ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              List<Map<String, dynamic>> notifications = snapshot.data!;
-              if (notifications.isEmpty) {
-                return Center(child: const Text('No Notifications available.'));
-              }
-              return Container(
-                padding: const EdgeInsets.only(
-                  left: 12,
-                  right: 12,
-                  top: 12,
-                ),
-                child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: notifications.length,
-                    itemBuilder: (context, i) {
-                      return Card(
-                        elevation: 2,
-                        child: ListTile(
-                          leading: Container(
-                            alignment: Alignment.center,
-                            width: 48,
-                            child: Icon(
-                              Icons.notifications_active,
-                              color: Colors.green,
-                            ),
-                          ),
-                          title: Text(
-                            notifications[i]['title'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text(
-                            notifications[i]['desc'],
-                          ),
-                          trailing: Icon(Icons.arrow_forward),
-                          onTap: () async {
-                            var url = notifications[i]['link'];
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url),
-                                  mode: LaunchMode.externalApplication);
-                              print("launched");
-                              //  await launch(url,
-                              //   forceWebView: false, enableJavaScript: true);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                            // Get.to(() => WebViewApp(link: 'null',));
-                          },
-                        ),
-                      );
-                    }),
-              );
-            } else {
-              return const Center(
-                  child: Text(
-                'No Content is available right now',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                ),
-              ));
-            }
-          },
+                onLoadStart: (controller, url) {
+                  setState(() {
+                    // this.url = url.toString();
+                    // urlController.text = this.url;
+                    isLoading = true;
+                  });
+                },
+                onLoadStop: (controller, url) {
+                  pullToRefreshController!.endRefreshing();
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                onProgressChanged: (controller, progress) {
+                  if (progress == 100) {
+                    pullToRefreshController?.endRefreshing();
+                  }
+                  setState(() {
+                    this.progress = progress / 100;
+                  });
+                },
+                pullToRefreshController: pullToRefreshController,
+                initialUrlRequest: URLRequest(url: Uri.parse(initialurl))),
+            // Visibility(
+            //     visible: isLoading,
+            //     child: CircularProgressIndicator(
+            //       valueColor: AlwaysStoppedAnimation(ColorConstants.appbgclr2),
+            //       backgroundColor: Colors.white,
+            //     )),
+            progress < 1.0
+                ? LoadingIndicator(
+                    progress: progress,
+                  )
+                : Container(),
+          ],
         ),
       ),
     );
   }
+
+  Future<bool> _onBackPressed() async {
+    if (await webViewController!.canGoBack()) {
+      webViewController!.goBack();
+      return false;
+    }
+    return true;
+    // return await showDialog(
+    //   //show confirm dialogue
+    //   //the return value will be from "Yes" or "No" options
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Exit App'),
+    //     content: const Text(
+    //       'Do you want to close ?',
+    //       style: TextStyle(fontWeight: FontWeight.w600),
+    //     ),
+    //     actions: [
+    //       ElevatedButton(
+    //         onPressed: () => Navigator.of(context).pop(false),
+    //         child: const Text('No'),
+    //       ),
+    //       ElevatedButton(
+    //         onPressed: () => Navigator.of(context).pop(true),
+    //         //return true when click on "Yes"
+    //         child: const Text('Yes'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+  }
 }
-
-// class NotificationCard extends StatelessWidget {
-//   final IconData icon;
-//   final String title;
-//   final String description;
-
-//   NotificationCard(
-//       {required this.icon, required this.title, required this.description});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       elevation: 2,
-//       child: ListTile(
-//         leading: Container(
-//           alignment: Alignment.center,
-//           width: 48,
-//           child: Icon(
-//             icon,
-//             color: Colors.green,
-//           ),
-//         ),
-//         title: Text(
-//           title,
-//           style: TextStyle(
-//             fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//         subtitle: Text(description),
-//         trailing: Icon(Icons.arrow_forward),
-//         onTap: () {
-//           // Handle notification card tap here
-//         },
-//       ),
-//     );
-//   }
-// }

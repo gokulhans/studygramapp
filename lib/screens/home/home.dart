@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/sidebar/sidebar.dart';
 import 'package:studygram/screens/course/course.dart';
 import 'package:studygram/screens/semester/semester.dart';
+import 'package:studygram/screens/subject/subject.dart';
 import 'package:studygram/screens/university/university.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/sizes.dart';
@@ -244,109 +245,6 @@ class _MainPageState extends State<MainPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          useruniversity,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            String? university = prefs.getString('university');
-                            Get.to(
-                              () => const Course(
-                                title: 'Course',
-                              ),
-                              arguments: {
-                                'university': university,
-                              },
-                            );
-                          },
-                          child: const Text(
-                            "View All",
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GridView.builder(
-                      shrinkWrap: true, // Add this property
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Add this property
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, // Number of columns in the grid
-                        // mainAxisSpacing: 10.0, // Spacing between rows
-                        // crossAxisSpacing: 10.0, // Spacing between columns
-                        childAspectRatio: 1.0, // Aspect ratio of each grid item
-                      ),
-                      itemCount: courses.length,
-                      itemBuilder: (context, index) {
-                        return TextButton(
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            String? university = prefs.getString('university');
-                            String? course = prefs.getString('course');
-                            Get.to(() => const Semester(title: "title"),
-                                arguments: {
-                                  'university': university,
-                                  'course': courses[index]['fcoursename']
-                                });
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                  height: 64,
-                                  width: 64,
-                                  decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.05),
-                                      borderRadius: BorderRadius.circular(50),
-                                      boxShadow: const [
-                                        // Shadow for top-left corner
-                                        BoxShadow(
-                                          color: Colors.grey,
-                                          offset: Offset(1, 1),
-                                          blurRadius: 2,
-                                          spreadRadius: 0.3,
-                                        ),
-                                        // Shadow for bottom-right corner
-                                        BoxShadow(
-                                          color: Colors.white,
-                                          offset: Offset(-1, -1),
-                                          blurRadius: 1,
-                                          spreadRadius: 3,
-                                        ),
-                                      ]),
-                                  child: Center(
-                                      child: Text(
-                                    convertName(courses[index]['coursename']!),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 14),
-                                  ))),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -411,7 +309,7 @@ class _MainPageState extends State<MainPage> {
                                 await SharedPreferences.getInstance();
                             String? university = prefs.getString('university');
                             String? course = prefs.getString('course');
-                            Get.to(() => const Semester(title: "title"),
+                            Get.to(() => const Subject(title: "title"),
                                 arguments: {
                                   'university': university,
                                   'course': course,
@@ -458,9 +356,112 @@ class _MainPageState extends State<MainPage> {
                       },
                     ),
                   ),
-                  const SizedBox(
-                    height: 4,
-                  )
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text(
+                  //         useruniversity,
+                  //         style: const TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.w700,
+                  //         ),
+                  //       ),
+                  //       TextButton(
+                  //         onPressed: () async {
+                  //           SharedPreferences prefs =
+                  //               await SharedPreferences.getInstance();
+                  //           String? university = prefs.getString('university');
+                  //           Get.to(
+                  //             () => const Course(
+                  //               title: 'Course',
+                  //             ),
+                  //             arguments: {
+                  //               'university': university,
+                  //             },
+                  //           );
+                  //         },
+                  //         child: const Text(
+                  //           "View All",
+                  //           style: TextStyle(
+                  //             color: Colors.orange,
+                  //             fontSize: 14,
+                  //             fontWeight: FontWeight.w700,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: GridView.builder(
+                  //     shrinkWrap: true, // Add this property
+                  //     physics:
+                  //         const NeverScrollableScrollPhysics(), // Add this property
+                  //     gridDelegate:
+                  //         const SliverGridDelegateWithFixedCrossAxisCount(
+                  //       crossAxisCount: 4, // Number of columns in the grid
+                  //       // mainAxisSpacing: 10.0, // Spacing between rows
+                  //       // crossAxisSpacing: 10.0, // Spacing between columns
+                  //       childAspectRatio: 1.0, // Aspect ratio of each grid item
+                  //     ),
+                  //     itemCount: courses.length,
+                  //     itemBuilder: (context, index) {
+                  //       return TextButton(
+                  //         onPressed: () async {
+                  //           SharedPreferences prefs =
+                  //               await SharedPreferences.getInstance();
+                  //           String? university = prefs.getString('university');
+                  //           String? course = prefs.getString('course');
+                  //           Get.to(() => const Semester(title: "title"),
+                  //               arguments: {
+                  //                 'university': university,
+                  //                 'course': courses[index]['fcoursename']
+                  //               });
+                  //         },
+                  //         child: Column(
+                  //           children: <Widget>[
+                  //             Container(
+                  //                 height: 64,
+                  //                 width: 64,
+                  //                 decoration: BoxDecoration(
+                  //                     color: Colors.black.withOpacity(0.05),
+                  //                     borderRadius: BorderRadius.circular(50),
+                  //                     boxShadow: const [
+                  //                       // Shadow for top-left corner
+                  //                       BoxShadow(
+                  //                         color: Colors.grey,
+                  //                         offset: Offset(1, 1),
+                  //                         blurRadius: 2,
+                  //                         spreadRadius: 0.3,
+                  //                       ),
+                  //                       // Shadow for bottom-right corner
+                  //                       BoxShadow(
+                  //                         color: Colors.white,
+                  //                         offset: Offset(-1, -1),
+                  //                         blurRadius: 1,
+                  //                         spreadRadius: 3,
+                  //                       ),
+                  //                     ]),
+                  //                 child: Center(
+                  //                     child: Text(
+                  //                   convertName(courses[index]['coursename']!),
+                  //                   style: const TextStyle(
+                  //                       color: Colors.black,
+                  //                       fontWeight: FontWeight.w900,
+                  //                       fontSize: 14),
+                  //                 ))),
+                  //           ],
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 4,
+                  // )
                 ]),
               ),
             ],

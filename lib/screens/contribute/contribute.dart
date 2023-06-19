@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// import 'package:image_picker/image_picker.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:cloudinary/cloudinary.dart';
+import 'dart:io';
 
 class Contribute extends StatefulWidget {
   @override
@@ -161,48 +163,49 @@ class _ContributeState extends State<Contribute> {
   }
 
   String imglink = "https://via.placeholder.com/1920x1080/eee?text=Store-Image";
+  File? _imageFile;
 
-  // void _selectImage() async {
-  //   final pickedFile = await ImagePicker()
-  //       .pickImage(source: ImageSource.gallery, imageQuality: 30);
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _imageFile = File(pickedFile.path);
-  //       print(_imageFile);
-  //     });
-  //     _uploadImage();
-  //   } else {
-  //     print('error');
-  //   }
-  // }
+  void _selectImage() async {
+    // final pickedFile = await ImagePicker()
+    //     .pickImage(source: ImageSource.gallery, imageQuality: 30);
+    // if (pickedFile != null) {
+    //   setState(() {
+    //     _imageFile = File(pickedFile.path);
+    //     print(_imageFile);
+    //   });
+    //   _uploadImage();
+    // } else {
+      print('error');
+    // }
+  }
 
-  // void _uploadImage() async {
-  //   final now = DateTime.now();
-  //   final timestamp = now.microsecondsSinceEpoch;
-  //   final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
-  //   final publicId = 'service_image_$timestamp$random';
-  //   if (_imageFile != null) {
-  //     final response = await cloudinary.upload(
-  //         file: _imageFile!.path,
-  //         fileBytes: _imageFile!.readAsBytesSync(),
-  //         resourceType: CloudinaryResourceType.image,
-  //         folder: "serviceimages",
-  //         fileName: publicId,
-  //         progressCallback: (count, total) {
-  //           print('Uploading image from file with progress: $count/$total');
-  //         });
-  //     if (response.isSuccessful) {
-  //       print('Get your image from with ${response.secureUrl}');
-  //       setState(() {
-  //         imglink = response.secureUrl!;
-  //       });
-  //     }
-  //     shop.img = imglink;
-  //     print(_imageFile);
-  //   } else {
-  //     print('error');
-  //   }
-  // }
+  void _uploadImage() async {
+    final now = DateTime.now();
+    final timestamp = now.microsecondsSinceEpoch;
+    final random = '${DateTime.now().millisecondsSinceEpoch}${now.microsecond}';
+    final publicId = 'service_image_$timestamp$random';
+    // if (_imageFile != null) {
+    //   final response = await cloudinary.upload(
+    //       file: _imageFile!.path,
+    //       fileBytes: _imageFile!.readAsBytesSync(),
+    //       resourceType: CloudinaryResourceType.image,
+    //       folder: "serviceimages",
+    //       fileName: publicId,
+    //       progressCallback: (count, total) {
+    //         print('Uploading image from file with progress: $count/$total');
+    //       });
+    //   if (response.isSuccessful) {
+    //     print('Get your image from with ${response.secureUrl}');
+    //     setState(() {
+    //       imglink = response.secureUrl!;
+    //     });
+    //   }
+    //   // shop.img = imglink;
+    //   print(_imageFile);
+    // } else {
+    //   print('error');
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +355,7 @@ class _ContributeState extends State<Contribute> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                
+                _selectImage();
               },
               child: Text('Upload Document'),
             ),
