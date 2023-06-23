@@ -1,15 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:studygram/screens/category/category.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/screens/module/module.dart';
-import 'package:studygram/screens/subject/subject.dart';
-import 'package:studygram/screens/subject/subject.dart';
-import 'package:studygram/screens/subject/subject.dart';
 import 'package:studygram/utils/constants.dart';
 
 class Subject extends StatelessWidget {
@@ -131,9 +126,10 @@ class _SublistState extends State<Sublist> {
                                 // "English",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,),
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
                               ),
                               onPressed: () {
                                 Get.to(

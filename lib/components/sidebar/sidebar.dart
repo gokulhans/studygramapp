@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studygram/pages/about/aboutus.dart';
 import 'package:studygram/pages/copyright/copyright.dart';
+import 'package:studygram/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as launchtab;
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -71,6 +72,54 @@ class NavDrawer extends StatelessWidget {
               } else {
                 throw 'Could not launch $url';
               }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.picture_as_pdf),
+            title: const Text('Submit PDF'),
+            onTap: () async {
+              var url = "${apidomain2}contribute";
+              await launchtab.launch(
+                url,
+                customTabsOption: launchtab.CustomTabsOption(
+                  toolbarColor: Colors.green.shade300,
+                  enableDefaultShare: true,
+                  enableUrlBarHiding: true,
+                  showPageTitle: true,
+                  animation: launchtab.CustomTabsSystemAnimation.slideIn(),
+                  extraCustomTabs: const <String>[
+                    // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+                    'org.mozilla.firefox',
+                    // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+                    'com.microsoft.emmx',
+                    'com.android.chrome',
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.video_camera_back),
+            title: const Text('Submit Video'),
+            onTap: () async {
+              var url = "${apidomain2}submitvideo";
+              await launchtab.launch(
+                url,
+                customTabsOption: launchtab.CustomTabsOption(
+                  toolbarColor: Colors.green.shade300,
+                  enableDefaultShare: true,
+                  enableUrlBarHiding: true,
+                  showPageTitle: true,
+                  animation: launchtab.CustomTabsSystemAnimation.slideIn(),
+                  extraCustomTabs: const <String>[
+                    // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+                    'org.mozilla.firefox',
+                    // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+                    'com.microsoft.emmx',
+                    'com.android.chrome',
+                  ],
+                ),
+              );
             },
           ),
           ListTile(

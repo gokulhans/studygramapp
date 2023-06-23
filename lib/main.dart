@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
     Notifications(
       title: 'notification',
     ),
-    Contribute()
+    // Contribute()
   ];
 
   @override
@@ -84,13 +84,13 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Community'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.notifications_active), label: 'Notifications'),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.upload,
-                // color: Colors.red,
-              ),
-              label: 'Contribute',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(
+            //     Icons.upload,
+            //     // color: Colors.red,
+            //   ),
+            //   label: 'Contribute',
+            // ),
           ]),
     );
   }

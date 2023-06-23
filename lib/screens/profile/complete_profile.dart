@@ -24,12 +24,19 @@ class _CompleteProfileState extends State<CompleteProfile> {
   List<Map<String, String>> courses = [];
   String selectedCourse = "";
   String selectedCourseName = "";
+  String UserName = "";
 
   @override
   void initState() {
     super.initState();
+    onload();
     fetchData(); // Fetch data from API when the widget is initialized
     fetchCourseData();
+  }
+
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    UserName = await pref.getString('username')!;
   }
 
   Future<void> fetchData() async {
@@ -100,8 +107,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
     print('Selected Course code: ${selectedCourseData['fcoursename']}');
   }
 
-  var name;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -145,7 +150,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                     ),
                   ),
                   addVerticalSpace(20),
-                   Text(
+                  Text(
                     'Name:',
                     style: TextStyle(
                       fontSize: 20,
@@ -157,10 +162,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                     initialValue: "",
                     // //controller: nameController,
                     onChanged: (val) {
-                      name = val;
+                      UserName = val;
                     },
-                    decoration: const InputDecoration(
-                        labelText: 'Name ',
+                    decoration: InputDecoration(
+                        labelText: UserName,
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -249,6 +254,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           await pref.setString('course', selectedCourseName);
                           await pref.setString('coursename', selectedCourse);
                           await pref.setString('universityname', selectedTag);
+                          await pref.setString('username', UserName);
                           await pref.setBool('user', true);
                           Get.to(() => MainPage());
                         },
@@ -260,7 +266,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            'Continue',
+                            'Save',
                             style: TextStyle(
                               fontSize: 18,
                             ),

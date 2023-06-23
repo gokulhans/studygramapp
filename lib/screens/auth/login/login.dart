@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/models/usermodel.dart';
-import 'package:studygram/screens/signup/signup.dart';
+import 'package:studygram/screens/auth/signup/signup.dart';
 import 'package:studygram/utils/color_constants.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/sizes.dart';
