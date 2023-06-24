@@ -138,7 +138,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  addVerticalSpace(20),
+                  addVerticalSpace(10),
                   Center(
                     child: Text(
                       'Complete Profile',
@@ -148,31 +148,31 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           color: Colors.green),
                     ),
                   ),
-                  addVerticalSpace(20),
-                  Text(
-                    'Name:',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 24),
-                  TextFormField(
-                    initialValue: "",
-                    // //controller: nameController,
-                    onChanged: (val) {
-                      UserName = val;
-                    },
-                    decoration: InputDecoration(
-                        labelText: UserName,
-                        labelStyle: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green))),
-                  ),
-                  SizedBox(height: 24),
+                  // addVerticalSpace(20),
+                  // Text(
+                  //   'Name:',
+                  //   style: TextStyle(
+                  //     fontSize: 20,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  // SizedBox(height: 24),
+                  // TextFormField(
+                  //   initialValue: "",
+                  //   // //controller: nameController,
+                  //   onChanged: (val) {
+                  //     UserName = val;
+                  //   },
+                  //   decoration: InputDecoration(
+                  //       labelText: UserName,
+                  //       labelStyle: TextStyle(
+                  //           fontFamily: 'Montserrat',
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Colors.grey),
+                  //       focusedBorder: UnderlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.green))),
+                  // ),
+                  SizedBox(height: 20),
                   Text(
                     'Select University:',
                     style: TextStyle(
@@ -253,9 +253,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           await pref.setString('course', selectedCourseName);
                           await pref.setString('coursename', selectedCourse);
                           await pref.setString('universityname', selectedTag);
-                          await pref.setString('username', UserName);
-                          await pref.setBool('user', true);
-                          Get.off(() => MainPage());
+                          // await pref.setString('username', UserName);
+                          // await pref.setBool('user', true);
+                          Get.offAll(() => MainPage());
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

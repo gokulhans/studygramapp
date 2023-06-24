@@ -10,7 +10,7 @@ const String tOwnerQuestion = "Are you a shope owner ?";
 const String tLoginQuestion = "Already have an account ?";
 
 //SignUp Screen Texts
-const String tSignUpQuestion = "New to OutQ ?";
+const String tSignUpQuestion = "New to Studygram ?";
 
 // Login Screen Texts
 const String tOwnerLogin = "Owner Login";

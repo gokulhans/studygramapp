@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/utils/color_constants.dart';
+import 'package:studygram/utils/constants.dart';
 
 class Notifications extends StatefulWidget {
   var title;
@@ -21,7 +22,8 @@ class _NotificationsState extends State<Notifications> {
   var isLoading = false;
   @override
   void initState() {
-    initialurl = "https://acadamix.wordpress.com/category/calicut-university/notifications/";
+    // initialurl = "https://acadamix.wordpress.com/category/calicut-university/notifications/";
+    initialurl = "${apidomain2}notifications";
     super.initState();
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(

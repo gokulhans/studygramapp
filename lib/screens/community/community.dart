@@ -1,13 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/indicator/progress_indicator.dart';
+import 'package:studygram/screens/auth/signup/signup.dart';
 import 'package:studygram/utils/color_constants.dart';
+import 'package:studygram/utils/constants.dart';
+
+class CheckAuthCommunity extends StatefulWidget {
+  const CheckAuthCommunity({super.key});
+
+  @override
+  State<CheckAuthCommunity> createState() => _CheckAuthCommunityState();
+}
+
+class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
+  @override
+  void initState() {
+    super.initState();
+    onload();
+  }
+
+  bool user = false;
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    user = await pref.getBool('user')!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (user) {
+      return Community(title: "title");
+    } else {
+      return UserSignUpPage();
+    }
+  }
+}
 
 class Community extends StatefulWidget {
   var title;
   Community({super.key, required this.title});
-
   @override
   State<Community> createState() => _CommunityState();
 }
@@ -20,10 +52,11 @@ class _CommunityState extends State<Community> {
   double progress = 0;
   final urlController = TextEditingController();
   var isLoading = false;
+
   @override
   void initState() {
-    initialurl = "https://plankton-app-wumy2.ondigitalocean.app/community";
     super.initState();
+    onload();
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
           color: ColorConstants.textclr,
@@ -32,6 +65,18 @@ class _CommunityState extends State<Community> {
         webViewController?.reload();
       },
     );
+  }
+
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var user = await pref.getBool('user');
+    var userid = pref.getString('userid')!;
+    initialurl = "${apidomain2}community/${userid}";
+    if (user!) {
+      Get.to(() => Community(title: "title"));
+    } else {
+      Get.to(() => UserSignUpPage());
+    }
   }
 
   @override

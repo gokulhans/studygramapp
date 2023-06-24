@@ -39,9 +39,7 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
   final screens = [
     Home(),
-    Community(
-      title: 'Community',
-    ),
+    CheckAuthCommunity(),
     Notifications(
       title: 'notification',
     ),

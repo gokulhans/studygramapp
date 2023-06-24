@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/appbar/appbarmain.dart';
+import 'package:studygram/main.dart';
 import 'package:studygram/models/usermodel.dart';
 import 'package:studygram/screens/auth/signup/signup.dart';
 import 'package:studygram/utils/color_constants.dart';
@@ -53,32 +54,51 @@ class _UserLoginPageState extends State<UserLoginPage> {
       msgclr = Colors.green[400];
       msg = "Login Success";
       msgdesc = "User Logined Successfully";
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      await pref.setString('username', jsonData[0]["name"]);
+      await pref.setString('userid', str);
+      await pref.setBool('user', true);
+      Get.snackbar(
+        msg,
+        msgdesc,
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: msgclr,
+        borderRadius: 12,
+        margin: const EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        isDismissible: true,
+        dismissDirection: DismissDirection.horizontal,
+        forwardAnimationCurve: Curves.bounceIn,
+      );
+      setState(() {
+        isLoading = false;
+      });
+      Get.offAll(() => MainPage());
     } else {
       msgclr = Colors.red[400];
       msg = "Login Failed";
       msgdesc = "Incorrect Email or Password";
+      Get.snackbar(
+        msg,
+        msgdesc,
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: msgclr,
+        borderRadius: 12,
+        margin: const EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        isDismissible: true,
+        dismissDirection: DismissDirection.horizontal,
+        forwardAnimationCurve: Curves.bounceIn,
+      );
       setState(() {
         isLoading = false;
       });
     }
 
-    Get.snackbar(
-      msg,
-      msgdesc,
-      icon: const Icon(Icons.person, color: Colors.white),
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: msgclr,
-      borderRadius: 12,
-      margin: const EdgeInsets.all(15),
-      colorText: Colors.white,
-      duration: const Duration(seconds: 3),
-      isDismissible: true,
-      dismissDirection: DismissDirection.horizontal,
-      forwardAnimationCurve: Curves.bounceIn,
-    );
-
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString("userid", str);
     // Get.to(() => {UserExitHome(currentIndex:0)});
 
     // Get.snackbar(
@@ -215,7 +235,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Text(
-                        tLoginQuestion,
+                        tSignUpQuestion,
                       ),
                       TextButton(
                         child: Text(tSignUp,
@@ -224,7 +244,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             )),
-                        onPressed: () => Get.to(() => const UserSignUpPage()),
+                        onPressed: () => Get.off(() => const UserSignUpPage()),
                       )
                     ],
                   )

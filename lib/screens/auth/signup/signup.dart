@@ -4,15 +4,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/appbar/appbarmain.dart';
+import 'package:studygram/main.dart';
 import 'package:studygram/models/usermodel.dart';
+import 'package:studygram/screens/auth/login/login.dart';
 import 'package:studygram/screens/community/community.dart';
+import 'package:studygram/screens/home/home.dart';
 import 'package:studygram/utils/color_constants.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/sizes.dart';
 import 'package:studygram/utils/text_strings.dart';
 import 'package:studygram/utils/widget_functions.dart';
-
-bool isLoading = false;
 
 class UserSignUpPage extends StatefulWidget {
   const UserSignUpPage({super.key});
@@ -56,108 +57,58 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
     if (response.statusCode == 201) {
       var jsonData = jsonDecode(response.body);
       str = jsonData[0]["id"];
-
       msgclr = Colors.green[400];
       msg = "Signup Success";
       msgdesc = "User Signed Successfully";
+      setState(() {
+        isFailed = false;
+      });
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      await pref.setString('username', users.name);
+      await pref.setString('userid', jsonData[0]["id"]);
+      await pref.setBool('user', true);
+      Get.snackbar(
+        msg,
+        msgdesc,
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: msgclr,
+        borderRadius: 12,
+        margin: const EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        isDismissible: true,
+        dismissDirection: DismissDirection.horizontal,
+        forwardAnimationCurve: Curves.bounceIn,
+      );
+      Get.offAll(() => MainPage());
     } else {
       msgclr = Colors.red[400];
       msg = "Signup Failed";
       msgdesc = "Email already in use";
       setState(() {
+        isFailed = true;
         isLoading = false;
       });
+      Get.snackbar(
+        msg,
+        msgdesc,
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: msgclr,
+        borderRadius: 12,
+        margin: const EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        isDismissible: true,
+        dismissDirection: DismissDirection.horizontal,
+        forwardAnimationCurve: Curves.bounceIn,
+      );
     }
-
-    Get.snackbar(
-      msg,
-      msgdesc,
-      icon: const Icon(Icons.person, color: Colors.white),
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: msgclr,
-      borderRadius: 12,
-      margin: const EdgeInsets.all(15),
-      colorText: Colors.white,
-      duration: const Duration(seconds: 3),
-      isDismissible: true,
-      dismissDirection: DismissDirection.horizontal,
-      forwardAnimationCurve: Curves.bounceIn,
-    );
-
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString("name", users.name);
-
-    Get.to(() => Community(title: "title"));
-    // Get.offAll(() => {UserExithome()});
-    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-    //     builder: (BuildContext context) => const UserExithome()));
   }
 
-  // String _currentAddress = "";
-  // String _pinCode = "";
-  // Position? _currentPosition;
-
-  // Future<bool> _handleLocationPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location services are disabled. Please enable the services')));
-  //     return false;
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(content: Text('Location permissions are denied')));
-  //       return false;
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text(
-  //             'Location permissions are permanently denied, we cannot request permissions.')));
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  // Future<void> _getCurrentPosition() async {
-  //   final hasPermission = await _handleLocationPermission();
-
-  //   if (!hasPermission) return;
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-  //       .then((Position position) {
-  //     setState(() => _currentPosition = position);
-  //     _getAddressFromLatLng(_currentPosition!);
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
-
-  // Future<void> _getAddressFromLatLng(Position position) async {
-  //   await placemarkFromCoordinates(
-  //           _currentPosition!.latitude, _currentPosition!.longitude)
-  //       .then((List<Placemark> placemarks) {
-  //     Placemark place = placemarks[0];
-  //     // print(place.country);
-  //     setState(() {
-  //       _pinCode = '${place.postalCode}';
-  //       _currentAddress =
-  //           '${place.administrativeArea}, ${place.locality}, ${place.thoroughfare}, ${place.postalCode}';
-  //     });
-  //     // print(_currentAddress);
-  //     users.location = _currentAddress;
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
-
   bool isLoading = false;
+  bool isFailed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -331,14 +282,17 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                                 borderSide: BorderSide(color: Colors.green))),
                         // //obscureText: true,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 24.0),
-                        child: Text(
-                          "Sign Up Failed. Try Again!",
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        ),
-                      ),
+                      isFailed
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 24.0),
+                              child: Text(
+                                "Sign Up Failed. Try Again!",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )
+                          : Container(),
                       addVerticalSpace(30),
                       // ignore: sized_box_for_whitespace
                       Container(
@@ -353,57 +307,58 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                // print("saved");
-                                // if (users.email.isEmpty ||
-                                //     !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                //         .hasMatch(users.email)) {
-                                //   Get.snackbar(
-                                //     "Invalid Email",
-                                //     "Enter Valid Email Address",
-                                //     icon: const Icon(Icons.person,
-                                //         color: Colors.white),
-                                //     snackPosition: SnackPosition.BOTTOM,
-                                //     backgroundColor: Colors.red,
-                                //     borderRadius: 12,
-                                //     margin: const EdgeInsets.all(15),
-                                //     colorText: Colors.white,
-                                //     duration: const Duration(seconds: 3),
-                                //     isDismissible: true,
-                                //     dismissDirection:
-                                //         DismissDirection.horizontal,
-                                //     forwardAnimationCurve: Curves.bounceIn,
-                                //   );
-                                //   setState(() {
-                                //     isLoading = false;
-                                //   });
-                                // } else if (users.name.isEmpty ||
-                                //         users.pswd.isEmpty ||
-                                //         users.phone.isEmpty
-                                //     // users.location.isEmpty ||
-                                //     // users.pincode.isEmpty
-                                //     ) {
-                                //   Get.snackbar(
-                                //     "Fill Every Field",
-                                //     "Fill every fields to continue",
-                                //     icon: const Icon(Icons.person,
-                                //         color: Colors.white),
-                                //     snackPosition: SnackPosition.BOTTOM,
-                                //     backgroundColor: Colors.red,
-                                //     borderRadius: 12,
-                                //     margin: const EdgeInsets.all(15),
-                                //     colorText: Colors.white,
-                                //     duration: const Duration(seconds: 3),
-                                //     isDismissible: true,
-                                //     dismissDirection:
-                                //         DismissDirection.horizontal,
-                                //     forwardAnimationCurve: Curves.bounceIn,
-                                //   );
-                                //   setState(() {
-                                //     isLoading = false;
-                                //   });
-                                // } else {
-                                signup_save(context);
-                                // }
+                                print("saved");
+                                if (users.email.isEmpty ||
+                                    !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                        .hasMatch(users.email)) {
+                                  Get.snackbar(
+                                    "Invalid Email",
+                                    "Enter Valid Email Address",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                } else if (users.name.isEmpty ||
+                                        users.email.isEmpty ||
+                                        users.pswd.isEmpty ||
+                                        users.phone.isEmpty
+                                    // users.location.isEmpty ||
+                                    // users.pincode.isEmpty
+                                    ) {
+                                  Get.snackbar(
+                                    "Fill Every Field",
+                                    "Fill every fields to continue",
+                                    icon: const Icon(Icons.person,
+                                        color: Colors.white),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    borderRadius: 12,
+                                    margin: const EdgeInsets.all(15),
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 3),
+                                    isDismissible: true,
+                                    dismissDirection:
+                                        DismissDirection.horizontal,
+                                    forwardAnimationCurve: Curves.bounceIn,
+                                  );
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                } else {
+                                  signup_save(context);
+                                }
                               },
                               child: isLoading
                                   ? const Center(
@@ -429,23 +384,23 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                     ],
                   )),
               const SizedBox(height: 15.0),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     const Text(
-              //       tLoginQuestion,
-              //     ),
-              //     TextButton(
-              //       child: Text(tLogin,
-              //           style: TextStyle(
-              //             color: ColorConstants.green,
-              //             fontWeight: FontWeight.bold,
-              //             decoration: TextDecoration.underline,
-              //           )),
-              //       onPressed: () => Get.to(() => const UserLoginPage()),
-              //     )
-              //   ],
-              // )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    tLoginQuestion,
+                  ),
+                  TextButton(
+                    child: Text(tLogin,
+                        style: TextStyle(
+                          color: ColorConstants.green,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        )),
+                    onPressed: () => Get.off(() => const UserLoginPage()),
+                  )
+                ],
+              )
             ],
           ),
         ),

@@ -6,7 +6,6 @@ import 'package:studygram/components/sidebar/sidebar.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:studygram/screens/course/course.dart';
 import 'package:studygram/screens/semester/semester.dart';
-import 'package:studygram/screens/subject/subject.dart';
 import 'package:studygram/screens/university/university.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -18,19 +17,19 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(color: Colors.white, child: const MainPage()),
+      body: Container(color: Colors.white, child: const HomePage()),
       drawer: NavDrawer(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomePageState extends State<HomePage> {
   List<Map<String, String>> courses = [];
   String selectedCourse = "";
   String selectedCourseName = "";
