@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studygram/pages/about/aboutus.dart';
 import 'package:studygram/pages/copyright/copyright.dart';
+import 'package:studygram/screens/auth/login/login.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -72,6 +73,13 @@ class NavDrawer extends StatelessWidget {
               } else {
                 throw 'Could not launch $url';
               }
+            },
+          ),
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.lock),
+            title: const Text('Login'),
+            onTap: () async {
+              Get.to(UserLoginPage());
             },
           ),
           ListTile(

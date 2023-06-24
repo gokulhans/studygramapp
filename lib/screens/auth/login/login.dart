@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:studygram/components/appbar/appbarmain.dart';
 import 'package:studygram/models/usermodel.dart';
 import 'package:studygram/screens/auth/signup/signup.dart';
 import 'package:studygram/utils/color_constants.dart';
@@ -31,7 +33,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
     // print({users.email, users.pswd});
     final response = await http.post(
         Uri.parse(
-          "${apidomain}auth/user/login",
+          "${apidomain2}auths/pro/login",
         ),
         headers: <String, String>{
           'Context-Type': 'application/json; charset=UTF-8',
@@ -92,6 +94,10 @@ class _UserLoginPageState extends State<UserLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(55),
+          child: AppBarMain(),
+        ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

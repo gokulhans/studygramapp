@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -256,7 +255,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           await pref.setString('universityname', selectedTag);
                           await pref.setString('username', UserName);
                           await pref.setBool('user', true);
-                          Get.to(() => MainPage());
+                          Get.off(() => MainPage());
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -275,6 +274,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       ),
                     ),
                   ),
+                  addVerticalSpace(20)
                 ],
               ),
             ),

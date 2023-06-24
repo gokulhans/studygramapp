@@ -20,23 +20,24 @@ class AppBarMain extends StatelessWidget {
       bottomOpacity: 0.0,
       elevation: 0.0,
       centerTitle: true,
+      // automaticallyImplyLeading: false,
       title: const Text(
         "Studygram",
         style: TextStyle(
             color: Colors.black, fontSize: 20, fontWeight: FontWeight.w800),
       ),
-      actions: [
-        IconButton(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          icon: const Icon(
-            Icons.person,
-            color: Colors.green,
-          ),
-          onPressed: () async {
-            Get.to(const CompleteProfile());
-          },
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     padding: const EdgeInsets.symmetric(horizontal: 24),
+      //     icon: const Icon(
+      //       Icons.person,
+      //       color: Colors.green,
+      //     ),
+      //     onPressed: () async {
+      //       Get.to(const CompleteProfile());
+      //     },
+      //   ),
+      // ],
       iconTheme: const IconThemeData(color: Colors.green),
     );
   }

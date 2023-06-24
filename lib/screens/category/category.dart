@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/screens/files/file.dart';
+import 'package:studygram/screens/semester/semester.dart';
 import 'package:studygram/screens/video/videolist.dart';
 import 'package:studygram/utils/constants.dart';
 
@@ -90,58 +91,58 @@ class _SublistState extends State<Sublist> {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      height: 60,
-                      margin: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 6,
-                        bottom: 6,
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.white30,
-                          borderRadius: BorderRadius.circular(50),
-                          boxShadow: const [
-                            // Shadow for top-left corner
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(1, 1),
-                              blurRadius: 2,
-                              spreadRadius: 0.3,
-                            ),
-                            // Shadow for bottom-right corner
-                            BoxShadow(
-                              color: Colors.white,
-                              offset: Offset(-1, -1),
-                              blurRadius: 1,
-                              spreadRadius: 3,
-                            ),
-                          ]),
-                      child: Center(
-                        child: TextButton(
-                            child: const Text(
-                              "Videos",
-                              // "English",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                            ),
-                            onPressed: () {
-                              Get.to(
-                                  () => const Videolist(
-                                        title: "",
-                                      ),
-                                  arguments: {
-                                    'university': argumentData['university'],
-                                    'course': argumentData['course'],
-                                    'semester': argumentData['semester'],
-                                    'subject': argumentData['subject'],
-                                    'module': argumentData['module'],
-                                  });
-                            }),
-                      ),
-                    ),
+                    // Container(
+                    //   height: 60,
+                    //   margin: const EdgeInsets.only(
+                    //     left: 12,
+                    //     right: 12,
+                    //     top: 6,
+                    //     bottom: 6,
+                    //   ),
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.white30,
+                    //       borderRadius: BorderRadius.circular(50),
+                    //       boxShadow: const [
+                    //         // Shadow for top-left corner
+                    //         BoxShadow(
+                    //           color: Colors.grey,
+                    //           offset: Offset(1, 1),
+                    //           blurRadius: 2,
+                    //           spreadRadius: 0.3,
+                    //         ),
+                    //         // Shadow for bottom-right corner
+                    //         BoxShadow(
+                    //           color: Colors.white,
+                    //           offset: Offset(-1, -1),
+                    //           blurRadius: 1,
+                    //           spreadRadius: 3,
+                    //         ),
+                    //       ]),
+                    //   child: Center(
+                    //     child: TextButton(
+                    //         child: const Text(
+                    //           "Videos",
+                    //           // "English",
+                    //           style: TextStyle(
+                    //               color: Colors.green,
+                    //               fontWeight: FontWeight.w600,
+                    //               fontSize: 16),
+                    //         ),
+                    //         onPressed: () {
+                    //           Get.to(
+                    //               () => const Videolist(
+                    //                     title: "",
+                    //                   ),
+                    //               arguments: {
+                    //                 'university': argumentData['university'],
+                    //                 'course': argumentData['course'],
+                    //                 'semester': argumentData['semester'],
+                    //                 'subject': argumentData['subject'],
+                    //                 'module': argumentData['module'],
+                    //               });
+                    //         }),
+                    //   ),
+                    // ),
                     Expanded(
                       child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
@@ -186,20 +187,31 @@ class _SublistState extends State<Sublist> {
                                     ),
                                     onPressed: () {
                                       Get.to(
-                                          () => const File(
+                                          () => const Semester(
                                                 title: "",
                                               ),
                                           arguments: {
                                             'university':
                                                 argumentData['university'],
                                             'course': argumentData['course'],
-                                            'semester':
-                                                argumentData['semester'],
-                                            'subject': argumentData['subject'],
-                                            'module': argumentData['module'],
                                             'category': categorys[i]
                                                 ['fcategoryname'],
                                           });
+                                      // Get.to(
+                                      //     () => const File(
+                                      //           title: "",
+                                      //         ),
+                                      //     arguments: {
+                                      //       'university':
+                                      //           argumentData['university'],
+                                      //       'course': argumentData['course'],
+                                      //       'semester':
+                                      //           argumentData['semester'],
+                                      //       'subject': argumentData['subject'],
+                                      //       'module': argumentData['module'],
+                                      //       'category': categorys[i]
+                                      //           ['fcategoryname'],
+                                      //     });
                                     }),
                               ),
                             );

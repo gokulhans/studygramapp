@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:studygram/screens/category/category.dart';
 import 'package:http/http.dart' as http;
-import 'package:studygram/screens/files/webview.dart';
 import 'package:studygram/screens/video/video.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/widget_functions.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Videolist extends StatelessWidget {
   const Videolist({Key? key, required this.title}) : super(key: key);
@@ -19,12 +17,13 @@ class Videolist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Video'),
+        title: const Text('Videos'),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.green,
           statusBarIconBrightness: Brightness.dark,
         ),
       ),
+      backgroundColor: Colors.white,
       body: Sublist(title: title),
     );
   }
@@ -65,7 +64,6 @@ class _SublistState extends State<Sublist> {
   // var endpoint = 'Bca/Semester-1';
   @override
   Widget build(BuildContext context) {
-    var argumentData = Get.arguments;
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -99,9 +97,21 @@ class _SublistState extends State<Sublist> {
                   itemCount: videos.length,
                   // itemCount: snapshot.data.length,
                   itemBuilder: (context, i) {
+                    var ytid =
+                        YoutubePlayer.convertUrlToId(videos[i]['videolink']);
                     return TextButton(
                       onPressed: () async {
-                        Get.to(VideoPage());
+                        var link = YoutubePlayer.convertUrlToId(
+                            videos[i]['videolink']);
+                        Get.to(VideoPage(), arguments: {
+                          "link": link,
+                          "title": videos[i]['videoname'],
+                          "subject": argumentData['subject'],
+                          'university': argumentData['university'],
+                          'course': argumentData['course'],
+                          'semester': argumentData['semester'],
+                          'category': argumentData['category'],
+                        });
                       },
                       child: Container(
                         margin: const EdgeInsets.only(
@@ -137,11 +147,11 @@ class _SublistState extends State<Sublist> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Image(
+                              child: Image(
                                 // height: 120,
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  "https://placehold.co/600x400/png",
+                                  "https://i3.ytimg.com/vi/${ytid}/hqdefault.jpg",
                                 ),
                               ),
                             ),
@@ -158,17 +168,17 @@ class _SublistState extends State<Sublist> {
                                   // const SizedBox(width: 3),
                                   // const Text("5"),
                                   Container(
-                                    // decoration: const BoxDecoration(
-                                    //   shape: BoxShape.circle,
-                                    //   color: Colors.grey,
-                                    // ),
-                                    // child: const Padding(
-                                    // padding:
-                                    //     EdgeInsets.symmetric(horizontal: 20),
-                                    child: SizedBox(width: 4, height: 4),
-                                    // ),
-                                  ),
-                                  const Text("By studygram"),
+                                      // decoration: const BoxDecoration(
+                                      //   shape: BoxShape.circle,
+                                      //   color: Colors.grey,
+                                      // ),
+                                      // child: const Padding(
+                                      // padding:
+                                      //     EdgeInsets.symmetric(horizontal: 20),
+                                      // child: SizedBox(width: 4, height: 4),
+                                      // ),
+                                      ),
+                                  Text("${argumentData['subject']}"),
                                 ],
                               ),
                             ],

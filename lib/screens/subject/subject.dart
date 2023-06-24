@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:studygram/screens/files/file.dart';
 import 'package:studygram/screens/module/module.dart';
+import 'package:studygram/screens/video/videolist.dart';
 import 'package:studygram/utils/constants.dart';
 
 class Subject extends StatelessWidget {
@@ -132,16 +134,35 @@ class _SublistState extends State<Sublist> {
                                 ),
                               ),
                               onPressed: () {
-                                Get.to(
-                                    () => const Module(
-                                          title: "",
-                                        ),
-                                    arguments: {
-                                      'university': argumentData['university'],
-                                      'course': argumentData['course'],
-                                      'semester': argumentData['semester'],
-                                      'subject': subjects[i]['fsubjectname'],
-                                    });
+                                if (argumentData['category'] == 'videos') {
+                                  Get.to(
+                                      () => const Videolist(
+                                            title: "",
+                                          ),
+                                      arguments: {
+                                        'university':
+                                            argumentData['university'],
+                                        'course': argumentData['course'],
+                                        'semester': argumentData['semester'],
+                                        'subject': subjects[i]['fsubjectname'],
+                                        // 'module': argumentData['module'],
+                                        'category': argumentData['category'],
+                                      });
+                                } else {
+                                  Get.to(
+                                      () => const File(
+                                            title: "",
+                                          ),
+                                      arguments: {
+                                        'university':
+                                            argumentData['university'],
+                                        'course': argumentData['course'],
+                                        'semester': argumentData['semester'],
+                                        'subject': subjects[i]['fsubjectname'],
+                                        // 'module': argumentData['module'],
+                                        'category': argumentData['category'],
+                                      });
+                                }
                               }),
                         ),
                       );

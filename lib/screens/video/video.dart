@@ -1,13 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/widget_functions.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
-class VideoPage extends StatelessWidget {
-  static String myVideoId = '8gMt9QYX8aI';
-  final YoutubePlayerController _controller = YoutubePlayerController(
+class VideoPage extends StatefulWidget {
+  VideoPage({Key? key}) : super(key: key);
+
+  @override
+  State<VideoPage> createState() => _VideoPageState();
+}
+
+class _VideoPageState extends State<VideoPage> {
+  var videoData = Get.arguments;
+  late String myVideoId = videoData['link'];
+
+  late YoutubePlayerController _controller = YoutubePlayerController(
     initialVideoId: myVideoId,
     flags: const YoutubePlayerFlags(
       autoPlay: true,
@@ -15,13 +29,11 @@ class VideoPage extends StatelessWidget {
     ),
   );
 
-  VideoPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Complex Theory'),
+        title: Text(videoData['title']),
         elevation: 0,
       ),
       body: Stack(
@@ -87,78 +99,13 @@ class VideoPage extends StatelessWidget {
                         ),
                       ),
                       MyTheme.mediumVerticalPadding,
-                      const Text("Complex Theory Explanation Part 1",
+                      Text(videoData['title'],
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold)),
                       addVerticalSpace(10),
-                      Text("course by nss college panthalam",
+                      Text("${videoData['subject']}",
                           style: TextStyle(fontSize: 16, color: MyTheme.grey)),
-                      MyTheme.largeVerticalPadding,
-                      // Row(
-                      //   children: [
-                      //     const Text("199 ",
-                      //         style: TextStyle(
-                      //             fontSize: 22, fontWeight: FontWeight.bold)),
-                      //     Expanded(
-                      //       child: Column(
-                      //         children: [
-                      //           const Text("Progress: 100%"),
-                      //           Container(
-                      //             margin: const EdgeInsets.fromLTRB(
-                      //                 32.0, 4.0, 32.0, 8.0),
-                      //             height: 10,
-                      //             child: const ClipRRect(
-                      //               borderRadius:
-                      //                   BorderRadius.all(Radius.circular(10)),
-                      //               child: LinearProgressIndicator(
-                      //                 value: 1,
-                      //                 valueColor: AlwaysStoppedAnimation<Color>(
-                      //                     Colors.green),
-                      //               ),
-                      //             ),
-                      //           )
-                      //         ],
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      MyTheme.mediumVerticalPadding,
-                      Text(
-                        "Learn the basics of lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                        style: GoogleFonts.poppins(
-                          fontSize: 17,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                      MyTheme.mediumVerticalPadding,
-//                       Row(
-//                         children: [
-//                           Expanded(
-//                             child: Html(
-//                               data: """<!doctype html>
-// <html>
-// <head>
-//   <meta charset="UTF-8">
-//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//   <script src="https://cdn.tailwindcss.com"></script>
-// </head>
-// <body>
-//   <h1 class="text-3xl font-bold underline">
-//     Hello world!
-//   </h1>
-// </body>
-// </html>""",
-//                               style: {
-//                                 'body': Style(
-//                                   margin: EdgeInsets.all(8),
-//                                   fontSize: FontSize.medium,
-//                                   fontFamily: 'Helvetica',
-//                                 ),
-//                               },
-//                             ),
-//                           ),
-//                         ],
-//                       )
+                      // MyContentWidget()
                     ],
                   ),
                 ),
@@ -170,76 +117,6 @@ class VideoPage extends StatelessWidget {
     );
   }
 }
-
-// class YoutubePlayerPage extends StatefulWidget {
-//   const YoutubePlayerPage({Key? key}) : super(key: key);
-
-//   @override
-//   _YoutubePlayerPageState createState() => _YoutubePlayerPageState();
-// }
-
-// class _YoutubePlayerPageState extends State<YoutubePlayerPage> {
-//   late YoutubePlayerController _controller;
-//   final List<String> _qualityOptions = ['1080p', '720p', '480p', '360p'];
-//   String _selectedQuality = '1080p';
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = YoutubePlayerController(
-//       initialVideoId: 'ENTER_YOUTUBE_VIDEO_ID_HERE',
-//       flags: const YoutubePlayerFlags(
-//         autoPlay: true,
-//         mute: false,
-//       ),
-//     );
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Youtube Player'),
-//         actions: [
-//           DropdownButton<String>(
-//             value: _selectedQuality,
-//             items: _qualityOptions.map((String quality) {
-//               return DropdownMenuItem<String>(
-//                 value: quality,
-//                 child: Text(quality),
-//               );
-//             }).toList(),
-//             onChanged: (String? value) {
-//               setState(() {
-//                 _selectedQuality = value!;
-//               });
-//               // _controller.setPlaybackQuality(_selectedQuality);
-//             },
-//           ),
-//           const SizedBox(width: 8),
-//         ],
-//       ),
-//       body: YoutubePlayer(
-//         controller: _controller,
-//         showVideoProgressIndicator: true,
-//         progressIndicatorColor: Colors.red,
-//       ),
-//     );
-//   }
-// }
-
-// class CourseScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
 
 class MyTheme {
   static Color get backgroundColor => const Color(0xFFF7F7F7);
@@ -283,3 +160,171 @@ class MyTheme {
         ),
       );
 }
+
+// class MyContentWidget extends StatefulWidget {
+//   MyContentWidget();
+
+//   @override
+//   _MyContentWidgetState createState() => _MyContentWidgetState();
+// }
+
+// class _MyContentWidgetState extends State<MyContentWidget> {
+//   var argumentData = Get.arguments;
+//   Future<List<Map<String, dynamic>>> fetchCourses() async {
+//     final response = await http.get(Uri.parse(
+//         '${apidomain}video/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}/${argumentData['subject']}/all-module'));
+//     print(
+//         '${apidomain}video/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}/${argumentData['subject']}/all-module');
+//     if (response.statusCode == 200) {
+//       final List<dynamic> data = json.decode(response.body);
+//       List<Map<String, dynamic>> videos = data
+//           .map((item) => {
+//                 '_id': item['_id'],
+//                 'videoname': item['videoname'],
+//                 'fvideoname': item['fvideoname'],
+//                 'videolink': item['videolink']
+//               })
+//           .toList();
+//       return videos;
+//     } else {
+//       throw Exception('Failed to fetch videos');
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // Use widget.data to render the dynamic content
+//     return Container(
+//       color: Colors.white,
+//       child: FutureBuilder<List<Map<String, dynamic>>>(
+//         future: fetchCourses(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(
+//               child: SpinKitCircle(
+//                 size: 80,
+//                 color: Colors.green,
+//               ),
+//             );
+//           } else if (snapshot.hasError) {
+//             return Text('Error: ${snapshot.error}');
+//           } else if (snapshot.hasData) {
+//             List<Map<String, dynamic>> videos = snapshot.data!;
+//             if (videos.isEmpty) {
+//               return const Center(child: Text('No Video Available.'));
+//             }
+//             return Container(
+//               padding: const EdgeInsets.only(
+//                 left: 12,
+//                 right: 12,
+//                 top: 12,
+//               ),
+//               child: ListView.builder(
+//                 scrollDirection: Axis.vertical,
+//                 shrinkWrap: true,
+//                 physics: const BouncingScrollPhysics(),
+//                 itemCount: videos.length,
+//                 // itemCount: snapshot.data.length,
+//                 itemBuilder: (context, i) {
+//                   return TextButton(
+//                     onPressed: () async {
+//                       var link =
+//                           YoutubePlayer.convertUrlToId(videos[i]['videolink']);
+//                       Get.to(VideoPage(), arguments: {
+//                         "link": link,
+//                         "title": videos[i]['videoname'],
+//                         "subject": argumentData['subject']
+//                       });
+//                     },
+//                     child: Container(
+//                       margin: const EdgeInsets.only(
+//                         left: 3,
+//                         right: 3,
+//                       ),
+//                       decoration: BoxDecoration(
+//                           color: Colors.white30,
+//                           borderRadius: BorderRadius.circular(10),
+//                           boxShadow: const [
+//                             // Shadow for top-left corner
+//                             BoxShadow(
+//                               color: Colors.grey,
+//                               offset: Offset(1, 1),
+//                               blurRadius: 2,
+//                               spreadRadius: 0.3,
+//                             ),
+//                             // Shadow for bottom-right corner
+//                             BoxShadow(
+//                               color: Colors.white,
+//                               offset: Offset(-1, -1),
+//                               blurRadius: 1,
+//                               spreadRadius: 3,
+//                             ),
+//                           ]),
+//                       child: ListTile(
+//                         contentPadding: const EdgeInsets.all(5),
+//                         leading: ClipRRect(
+//                           borderRadius: BorderRadius.circular(8),
+//                           child: Container(
+//                             width: 80,
+//                             // height: 120,
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(12),
+//                             ),
+//                             child: const Image(
+//                               // height: 120,
+//                               fit: BoxFit.cover,
+//                               image: NetworkImage(
+//                                 "https://placehold.co/600x400/png",
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                         title: Text(videos[i]['videoname']),
+//                         subtitle: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             addVerticalSpace(10),
+//                             Row(
+//                               children: [
+//                                 // const Icon(Icons.favorite,
+//                                 //     color: Colors.orange, size: 20),
+//                                 // const SizedBox(width: 3),
+//                                 // const Text("5"),
+//                                 Container(
+//                                     // decoration: const BoxDecoration(
+//                                     //   shape: BoxShape.circle,
+//                                     //   color: Colors.grey,
+//                                     // ),
+//                                     // child: const Padding(
+//                                     // padding:
+//                                     //     EdgeInsets.symmetric(horizontal: 20),
+//                                     // child: SizedBox(width: 4, height: 4),
+//                                     // ),
+//                                     ),
+//                                 Text("${argumentData['subject']}"),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                         // trailing: LikeButton(
+//                         //     onPressed: () {}, color: Colors.orange),
+//                       ),
+//                     ),
+//                   );
+//                 },
+//               ),
+//             );
+//           } else {
+//             return const Center(
+//                 child: Text(
+//               'No Content is available right now',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.w800,
+//               ),
+//             ));
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }

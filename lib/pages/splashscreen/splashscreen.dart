@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:studygram/pages/internet_status/internethome.dart';
 import 'package:studygram/pages/update/updatehome.dart';
 import 'package:studygram/utils/color_constants.dart';
 import 'package:studygram/utils/widget_functions.dart';
@@ -18,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) async {
-      Get.off(() => const UpdateHome());
+      Get.off(() => const InternetHome());
     });
   }
 

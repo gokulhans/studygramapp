@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:new_version/new_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/main.dart';
-import 'package:studygram/pages/exithome/exithome.dart';
 import 'package:studygram/pages/update/updatedialog.dart';
 import 'package:studygram/screens/profile/complete_profile.dart';
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -130,13 +129,21 @@ class _SublistState extends State<Sublist> {
                               ),
                               onPressed: () {
                                 Get.to(
-                                    () => const Semester(
+                                    () => const Category(
                                           title: "",
                                         ),
                                     arguments: {
                                       'university': argumentData['university'],
                                       'course': courses[i]['fcoursename'],
                                     });
+                                // Get.to(
+                                //     () => const Semester(
+                                //           title: "",
+                                //         ),
+                                //     arguments: {
+                                //       'university': argumentData['university'],
+                                //       'course': courses[i]['fcoursename'],
+                                //     });
                               }),
                         ),
                       );

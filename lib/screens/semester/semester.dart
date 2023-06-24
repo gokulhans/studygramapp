@@ -137,6 +137,7 @@ class _SublistState extends State<Sublist> {
                                     arguments: {
                                       'university': argumentData['university'],
                                       'course': argumentData['course'],
+                                      'category': argumentData['category'],
                                       'semester': semesters[i]['fsemestername'],
                                     });
                               }),

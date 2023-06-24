@@ -4,9 +4,9 @@ import 'package:studygram/components/appbar/appbarmain.dart';
 import 'package:studygram/components/sidebar/sidebar.dart';
 import 'package:studygram/pages/splashscreen/splashscreen.dart';
 import 'package:studygram/screens/community/community.dart';
-import 'package:studygram/screens/contribute/contribute.dart';
 import 'package:studygram/screens/home/home.dart';
 import 'package:studygram/screens/notification/notifications.dart';
+import 'package:studygram/screens/profile/complete_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
     Notifications(
       title: 'notification',
     ),
-    // Contribute()
+    CompleteProfile()
   ];
 
   @override
@@ -84,13 +84,13 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Community'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.notifications_active), label: 'Notifications'),
-            // BottomNavigationBarItem(
-            //   icon: Icon(
-            //     Icons.upload,
-            //     // color: Colors.red,
-            //   ),
-            //   label: 'Contribute',
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                // color: Colors.red,
+              ),
+              label: 'Profile',
+            ),
           ]),
     );
   }

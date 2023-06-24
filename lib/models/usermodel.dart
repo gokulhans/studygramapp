@@ -4,9 +4,13 @@ class Users {
 }
 
 class UserSignUpModel {
-  String name, email, pswd, phone, location, pincode;
-  UserSignUpModel(this.name, this.email, this.pswd, this.phone, this.location,
-      this.pincode);
+  String name, email, phone, pswd;
+  UserSignUpModel(
+    this.name,
+    this.email,
+    this.pswd,
+    this.phone,
+  );
 }
 
 class UserLoginModel {
