@@ -154,11 +154,11 @@ class _NavDrawerState extends State<NavDrawer> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.copyright_sharp),
-            title: const Text('Copyright'),
-            onTap: () => {Get.to(const Copyright())},
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.copyright_sharp),
+          //   title: const Text('Copyright'),
+          //   onTap: () => {Get.to(const Copyright())},
+          // ),
           // ListTile(
           //   leading: Icon(Icons.favorite,color: Colors.red,),
           //   title: Text('Support Us',style: TextStyle(color: Colors.red,fontWeight: FontWeight.w900),),

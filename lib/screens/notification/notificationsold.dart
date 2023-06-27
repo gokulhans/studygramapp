@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as launchtab;
 
 class Notificationsold extends StatelessWidget {
   const Notificationsold({Key? key, required this.title}) : super(key: key);
@@ -31,7 +33,8 @@ class _SublistState extends State<Sublist> {
   Future<List<Map<String, dynamic>>> fetchCourses() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String useruniversity = prefs.getString('universityname')!;
-    final response = await http.get(Uri.parse('${apidomain}noti/${useruniversity}'));
+    final response =
+        await http.get(Uri.parse('${apidomain}noti/${useruniversity}'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -73,7 +76,8 @@ class _SublistState extends State<Sublist> {
             } else if (snapshot.hasData) {
               List<Map<String, dynamic>> notificationsold = snapshot.data!;
               if (notificationsold.isEmpty) {
-                return Center(child: const Text('No Notificationsold available.'));
+                return Center(
+                    child: const Text('No Notificationsold available.'));
               }
               return Container(
                 padding: const EdgeInsets.only(
@@ -105,18 +109,37 @@ class _SublistState extends State<Sublist> {
                           subtitle: Text(
                             notificationsold[i]['desc'],
                           ),
-                          trailing: Icon(Icons.arrow_forward),
+                          trailing: IconButton(
+                            icon: Icon(Icons.share),
+                            onPressed: () async {
+                              const message = "New Notification";
+                              var appurl = notificationsold[i]['link'];
+                              await Share.share("$message \n $appurl");
+                            },
+                          ),
                           onTap: () async {
                             var url = notificationsold[i]['link'];
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url),
-                                  mode: LaunchMode.externalApplication);
-                              print("launched");
-                              //  await launch(url,
-                              //   forceWebView: false, enableJavaScript: true);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            var userid = prefs.getString('userid')!;
+                            await launchtab.launch(
+                              url,
+                              customTabsOption: launchtab.CustomTabsOption(
+                                toolbarColor: Colors.green.shade300,
+                                enableDefaultShare: true,
+                                enableUrlBarHiding: true,
+                                showPageTitle: true,
+                                animation: launchtab.CustomTabsSystemAnimation
+                                    .slideIn(),
+                                extraCustomTabs: const <String>[
+                                  // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+                                  'org.mozilla.firefox',
+                                  // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+                                  'com.microsoft.emmx',
+                                  'com.android.chrome',
+                                ],
+                              ),
+                            );
                             // Get.to(() => WebViewApp(link: 'null',));
                           },
                         ),

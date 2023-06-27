@@ -114,10 +114,10 @@ class _UserLoginPageState extends State<UserLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(55),
-          child: AppBarMain(),
-        ),
+        // appBar: const PreferredSize(
+        //   preferredSize: Size.fromHeight(55),
+        //   child: AppBarMain(),
+        // ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -244,7 +244,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             )),
-                        onPressed: () => Get.off(() => const UserSignUpPage()),
+                        onPressed: () => Get.to(() => const UserSignUpPage()),
                       )
                     ],
                   )

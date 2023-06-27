@@ -35,7 +35,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    UserName = await pref.getString('username')!;
+    String University = await pref.getString('universityname')!;
+    String Course = await pref.getString('coursename')!;
+    setState(() {
+      selectedTag = University;
+      selectedCourse = Course;
+    });
   }
 
   Future<void> fetchData() async {
@@ -254,7 +259,24 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           await pref.setString('coursename', selectedCourse);
                           await pref.setString('universityname', selectedTag);
                           // await pref.setString('username', UserName);
-                          // await pref.setBool('user', true);
+                          await pref.setBool('completeprofile', true);
+                          var msgclr = Colors.green[400];
+                          String msg = "Success";
+                          String msgdesc = "Profile Saved Successfully";
+                          Get.snackbar(
+                            msg,
+                            msgdesc,
+                            icon: const Icon(Icons.person, color: Colors.white),
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: msgclr,
+                            borderRadius: 12,
+                            margin: const EdgeInsets.all(15),
+                            colorText: Colors.white,
+                            duration: const Duration(seconds: 3),
+                            isDismissible: true,
+                            dismissDirection: DismissDirection.horizontal,
+                            forwardAnimationCurve: Curves.bounceIn,
+                          );
                           Get.offAll(() => MainPage());
                         },
                         style: ElevatedButton.styleFrom(

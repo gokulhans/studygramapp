@@ -15,31 +15,44 @@ class CheckAuthCommunity extends StatefulWidget {
 }
 
 class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
+  late bool user = false;
+  late String useruniversity = "university";
+  late String username = "Guest";
   @override
   void initState() {
     super.initState();
     onload();
   }
 
-  bool user = false;
   void onload() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    user = await pref.getBool('user')!;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool uservalue = await prefs.getBool('user')!;
+    useruniversity = prefs.getString('universityname')!;
+    useruniversity = prefs.getString('username')!;
+    setState(() {
+      user = uservalue;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     if (user) {
-      return Community(title: "title");
+      print('called 1');
+      return Community(
+        name: username,
+        university: useruniversity,
+      );
     } else {
+      print('called 2');
       return UserSignUpPage();
     }
   }
 }
 
 class Community extends StatefulWidget {
-  var title;
-  Community({super.key, required this.title});
+  var name;
+  var university;
+  Community({super.key, required this.name, required this.university});
   @override
   State<Community> createState() => _CommunityState();
 }
@@ -48,7 +61,7 @@ class _CommunityState extends State<Community> {
   InAppWebViewController? webViewController;
   PullToRefreshController? pullToRefreshController;
   String url = "";
-  String initialurl = "";
+  String initialurl = "${apidomain2}community/Guest/community";
   double progress = 0;
   final urlController = TextEditingController();
   var isLoading = false;
@@ -56,7 +69,18 @@ class _CommunityState extends State<Community> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      initialurl = "${apidomain2}community/${widget.name}/${widget.university}";
+    });
     onload();
+  }
+
+  void onload() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var username = pref.getString('username')!;
+    setState(() {
+      initialurl = "${apidomain2}community/${username}";
+    });
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
           color: ColorConstants.textclr,
@@ -65,18 +89,11 @@ class _CommunityState extends State<Community> {
         webViewController?.reload();
       },
     );
-  }
-
-  void onload() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var user = await pref.getBool('user');
-    var userid = pref.getString('userid')!;
-    initialurl = "${apidomain2}community/${userid}";
-    if (user!) {
-      Get.to(() => Community(title: "title"));
-    } else {
-      Get.to(() => UserSignUpPage());
-    }
+    // if (user!) {
+    //   Get.to(() => Community(title: "title"));
+    // } else {
+    //   Get.to(() => UserSignUpPage());
+    // }
   }
 
   @override

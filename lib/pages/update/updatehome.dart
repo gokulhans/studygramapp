@@ -42,20 +42,21 @@ class _UpdateHomeState extends State<UpdateHome> {
             );
           },
         );
-        // newVersion.showUpdateDialog(
-        //   context: context,
-        //   versionStatus: status,
-        //   dialogText: 'New Version is available in the store (${status.storeVersion}), update now!',
-        //   dialogTitle: 'Update is Available!',
-        // );
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          dialogText:
+              'New Version is available in the store (${status.storeVersion}), update now!',
+          dialogTitle: 'Update is Available!',
+        );
       }
     }
   }
 
   Future<bool> checkUserExists() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool userExists = prefs.getBool('user') ?? false;
-    return userExists;
+    bool userCompletedProfile = prefs.getBool('completeprofile') ?? false;
+    return userCompletedProfile;
   }
 
   @override

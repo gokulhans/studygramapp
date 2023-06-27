@@ -6,6 +6,7 @@ import 'package:studygram/components/sidebar/sidebar.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:studygram/screens/course/course.dart';
 import 'package:studygram/screens/semester/semester.dart';
+import 'package:studygram/screens/subject/subject.dart';
 import 'package:studygram/screens/university/university.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -48,11 +49,13 @@ class _HomePageState extends State<HomePage> {
 
   String useruniversity = "";
   String usercourse = "";
+  bool isCompletedProfile = false;
 
   void onload() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     useruniversity = prefs.getString('universityname')!;
     usercourse = prefs.getString('coursename')!;
+    isCompletedProfile = prefs.getBool('completedprofile')!;
   }
 
   @override
@@ -170,122 +173,138 @@ class _HomePageState extends State<HomePage> {
               Container(
                 color: Colors.white,
                 child: Column(children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "All Universities",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const University(
-                                        title: 'University',
-                                      )),
-                            );
-                          },
-                          child: const Text(
-                            "View All",
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true, // Add this property
-                    physics:
-                        const NeverScrollableScrollPhysics(), // Add this property
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, // Number of columns in the grid
-                      // mainAxisSpacing: 5.0, // Spacing between rows
-                      // crossAxisSpacing: 5.0, // Spacing between columns
-                      childAspectRatio: 0.8, // Aspect ratio of each grid item
-                    ),
-                    itemCount: university.length,
-                    itemBuilder: (context, index) {
-                      return TextButton(
-                        onPressed: () async {
-                          Get.to(
-                              const Course(
-                                title: "",
-                              ),
-                              arguments: {
-                                'university': university[index]['funiname']!,
-                              });
-                        },
-                        child: Column(
+                  isCompletedProfile
+                      ? Column(
                           children: [
-                            Container(
-                              height: 64,
-                              width: 64,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(50),
-                                  boxShadow: const [
-                                    // Shadow for top-left corner
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(1, 1),
-                                      blurRadius: 2,
-                                      spreadRadius: 0.3,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "All Universities",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                    // Shadow for bottom-right corner
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      offset: Offset(-1, -1),
-                                      blurRadius: 1,
-                                      spreadRadius: 3,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const University(
+                                                  title: 'University',
+                                                )),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "View All",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ]),
-                              child: Center(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100.0),
-                                  child: Image(
-                                      width: 64,
-                                      height: 64,
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          university[index]['image']!)),
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                            addVerticalSpace(5),
-                            Text(
-                              university[index]['uniname']!,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              // convertName(categories[index]['categoryname']!),
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 12),
-                            )
+                            GridView.builder(
+                              shrinkWrap: true, // Add this property
+                              physics:
+                                  const NeverScrollableScrollPhysics(), // Add this property
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount:
+                                    4, // Number of columns in the grid
+                                // mainAxisSpacing: 5.0, // Spacing between rows
+                                // crossAxisSpacing: 5.0, // Spacing between columns
+                                childAspectRatio:
+                                    0.8, // Aspect ratio of each grid item
+                              ),
+                              itemCount: university.length,
+                              itemBuilder: (context, index) {
+                                return TextButton(
+                                  onPressed: () async {
+                                    Get.to(
+                                        const Course(
+                                          title: "",
+                                        ),
+                                        arguments: {
+                                          'university': university[index]
+                                              ['funiname']!,
+                                        });
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 64,
+                                        width: 64,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.05),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: const [
+                                              // Shadow for top-left corner
+                                              BoxShadow(
+                                                color: Colors.grey,
+                                                offset: Offset(1, 1),
+                                                blurRadius: 2,
+                                                spreadRadius: 0.3,
+                                              ),
+                                              // Shadow for bottom-right corner
+                                              BoxShadow(
+                                                color: Colors.white,
+                                                offset: Offset(-1, -1),
+                                                blurRadius: 1,
+                                                spreadRadius: 3,
+                                              ),
+                                            ]),
+                                        child: Center(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100.0),
+                                            child: Image(
+                                                width: 64,
+                                                height: 64,
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                    university[index]
+                                                        ['image']!)),
+                                          ),
+                                        ),
+                                      ),
+                                      addVerticalSpace(5),
+                                      Text(
+                                        university[index]['uniname']!,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        // convertName(categories[index]['categoryname']!),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                           ],
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                        )
+                      : Container(),
                   // Padding(
                   //   padding: const EdgeInsets.symmetric(horizontal: 20),
                   //   child: Row(
@@ -525,7 +544,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "All Courses",
+                          useruniversity,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,

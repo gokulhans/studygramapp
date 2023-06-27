@@ -6,6 +6,7 @@ import 'package:studygram/pages/splashscreen/splashscreen.dart';
 import 'package:studygram/screens/community/community.dart';
 import 'package:studygram/screens/home/home.dart';
 import 'package:studygram/screens/notification/notifications.dart';
+import 'package:studygram/screens/notification/notificationsold.dart';
 import 'package:studygram/screens/profile/complete_profile.dart';
 
 void main() {
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
   final screens = [
     Home(),
     CheckAuthCommunity(),
-    Notifications(
+    Notificationsold(
       title: 'notification',
     ),
     CompleteProfile()
