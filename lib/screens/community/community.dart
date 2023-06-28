@@ -27,7 +27,7 @@ class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
   void onload() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool uservalue = await prefs.getBool('user')!;
-    useruniversity = prefs.getString('universityname')!;
+    useruniversity = prefs.getString('university')!;
     useruniversity = prefs.getString('username')!;
     setState(() {
       user = uservalue;

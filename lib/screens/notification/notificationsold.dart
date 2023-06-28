@@ -32,7 +32,7 @@ class Sublist extends StatefulWidget {
 class _SublistState extends State<Sublist> {
   Future<List<Map<String, dynamic>>> fetchCourses() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String useruniversity = prefs.getString('universityname')!;
+    String useruniversity = prefs.getString('university')!;
     final response =
         await http.get(Uri.parse('${apidomain}noti/${useruniversity}'));
 
@@ -77,7 +77,7 @@ class _SublistState extends State<Sublist> {
               List<Map<String, dynamic>> notificationsold = snapshot.data!;
               if (notificationsold.isEmpty) {
                 return Center(
-                    child: const Text('No Notificationsold available.'));
+                    child: const Text('No Notifications available.'));
               }
               return Container(
                 padding: const EdgeInsets.only(
