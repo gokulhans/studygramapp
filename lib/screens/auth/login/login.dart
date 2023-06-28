@@ -14,8 +14,6 @@ import 'package:studygram/utils/sizes.dart';
 import 'package:studygram/utils/text_strings.dart';
 import 'package:studygram/utils/widget_functions.dart';
 
-bool isLoading = false;
-
 class UserLoginPage extends StatefulWidget {
   const UserLoginPage({super.key});
 
@@ -23,13 +21,13 @@ class UserLoginPage extends StatefulWidget {
   State<UserLoginPage> createState() => _UserLoginPageState();
 }
 
-TextEditingController nameController = TextEditingController(text: '');
-TextEditingController emailController = TextEditingController(text: '');
-TextEditingController pswdController = TextEditingController(text: '');
-
-UserLoginModel users = UserLoginModel('', '');
+// TextEditingController nameController = TextEditingController(text: '');
+// TextEditingController emailController = TextEditingController(text: '');
+// TextEditingController pswdController = TextEditingController(text: '');
 
 class _UserLoginPageState extends State<UserLoginPage> {
+  UserLoginModel users = UserLoginModel('', '');
+  bool isLoading = false;
   Future login_save(BuildContext context) async {
     // print({users.email, users.pswd});
     final response = await http.post(

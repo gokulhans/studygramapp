@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as launchtab;
@@ -65,19 +66,15 @@ class _SublistState extends State<Sublist> {
           future: fetchCourses(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SpinKitCircle(
-                  size: 80,
-                  color: Colors.green,
-                ),
+              return LoadingIndicator(
+                progress: null,
               );
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               List<Map<String, dynamic>> notificationsold = snapshot.data!;
               if (notificationsold.isEmpty) {
-                return Center(
-                    child: const Text('No Notifications available.'));
+                return Center(child: const Text('No Notifications available.'));
               }
               return Container(
                 padding: const EdgeInsets.only(

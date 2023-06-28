@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/screens/auth/signup/signup.dart';
@@ -27,10 +26,12 @@ class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
   void onload() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool uservalue = await prefs.getBool('user')!;
-    useruniversity = prefs.getString('university')!;
-    useruniversity = prefs.getString('username')!;
+    String Tempuseruniversity = await prefs.getString('university')!;
+    String Tempusername = await prefs.getString('username')!;
     setState(() {
       user = uservalue;
+      username = Tempusername;
+      useruniversity = Tempuseruniversity;
     });
   }
 
@@ -44,7 +45,9 @@ class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
       );
     } else {
       print('called 2');
-      return UserSignUpPage();
+      return LoadingIndicator(
+        progress: null,
+      );
     }
   }
 }

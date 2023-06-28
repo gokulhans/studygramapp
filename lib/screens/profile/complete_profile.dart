@@ -30,13 +30,17 @@ class _CompleteProfileState extends State<CompleteProfile> {
     super.initState();
     onload();
     fetchData(); // Fetch data from API when the widget is initialized
-    fetchCourseData();
   }
 
   void onload() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String University = await pref.getString('universityname')!;
     String Course = await pref.getString('coursename')!;
+    bool IsProfileCompletd = await pref.getBool('completeprofile')!;
+    if (IsProfileCompletd) {
+      fetchCourseData(
+          University); // Fetch data from API when the widget is initialized
+    }
     setState(() {
       selectedTag = University;
       selectedCourse = Course;
@@ -65,9 +69,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
     }
   }
 
-  Future<void> fetchCourseData() async {
+  Future<void> fetchCourseData(selectedUniversityName) async {
     try {
-      final response = await http.get(Uri.parse('${apidomain}course'));
+      final response = await http
+          .get(Uri.parse('${apidomain}course/${selectedUniversityName}'));
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body) as List<dynamic>;
         print(jsonData);
@@ -204,6 +209,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         selected: selectedTag == tagText,
                         selectedColor: Colors.green,
                         onSelected: (isSelected) {
+                          fetchCourseData(selectedTagName);
                           handleTagSelection(tagText, selectedTagName);
                         },
                       );
