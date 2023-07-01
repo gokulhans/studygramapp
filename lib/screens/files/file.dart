@@ -140,9 +140,11 @@ class _SublistState extends State<Sublist> {
                                   // snapshot.data[i].name,
                                   docs[i]['docname'],
                                   textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w800,
-                                      fontSize: 14),
+                                      fontSize: 10),
                                 ),
                                 IconButton(
                                   onPressed: () {},

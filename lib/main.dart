@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Studygram',
+      title: 'Just Pass',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),

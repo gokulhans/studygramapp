@@ -45,9 +45,7 @@ class _CheckAuthCommunityState extends State<CheckAuthCommunity> {
       );
     } else {
       print('called 2');
-      return LoadingIndicator(
-        progress: null,
-      );
+      return UserSignUpPage();
     }
   }
 }

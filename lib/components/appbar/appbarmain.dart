@@ -22,9 +22,9 @@ class AppBarMain extends StatelessWidget {
       centerTitle: true,
       // automaticallyImplyLeading: false,
       title: const Text(
-        "Studygram",
+        "JUSTPASS",
         style: TextStyle(
-            color: Colors.black, fontSize: 20, fontWeight: FontWeight.w800),
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
       ),
       // actions: [
       //   IconButton(

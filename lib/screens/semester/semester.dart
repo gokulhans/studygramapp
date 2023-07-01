@@ -94,6 +94,7 @@ class _SublistState extends State<Sublist> {
                     itemBuilder: (context, i) {
                       return Container(
                         height: 60,
+                        width: MediaQuery.of(context).size.width / 2 - 18,
                         margin: const EdgeInsets.only(
                           left: 12,
                           right: 12,

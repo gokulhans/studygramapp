@@ -130,7 +130,7 @@ class _SublistState extends State<Sublist> {
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                 ),
                               ),
                               onPressed: () {

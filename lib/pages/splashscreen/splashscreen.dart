@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 )),
                 addVerticalSpace(10),
                 const Text(
-                  "STUDYGRAM",
+                  "JUSTPASS",
                   style: TextStyle(
                       fontWeight: FontWeight.w900,
                       color: Colors.black87,

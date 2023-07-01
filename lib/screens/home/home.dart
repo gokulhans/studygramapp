@@ -500,8 +500,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      height: 64,
-                                      width: 64,
+                                      height: 48,
+                                      width: 48,
                                       decoration: BoxDecoration(
                                           color: Colors.black.withOpacity(0.05),
                                           borderRadius:
@@ -527,25 +527,25 @@ class _HomePageState extends State<HomePage> {
                                           borderRadius:
                                               BorderRadius.circular(100.0),
                                           child: Image(
-                                              width: 64,
-                                              height: 64,
+                                              width: 48,
+                                              height: 48,
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
                                                   categories[index]['image']!)),
                                         ),
                                       ),
                                     ),
-                                    addVerticalSpace(5),
+                                    addVerticalSpace(10),
                                     Text(
                                       categories[index]['categoryname']!,
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       // convertName(categories[index]['categoryname']!),
-                                      style: const TextStyle(
-                                          color: Colors.black,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
                                           fontWeight: FontWeight.w900,
-                                          fontSize: 12),
+                                          fontSize: 10),
                                     )
                                   ],
                                 ),
@@ -627,8 +627,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      height: 64,
-                                      width: 64,
+                                      height: 48,
+                                      width: 48,
                                       decoration: BoxDecoration(
                                           color: Colors.black.withOpacity(0.05),
                                           borderRadius:
@@ -654,25 +654,25 @@ class _HomePageState extends State<HomePage> {
                                           borderRadius:
                                               BorderRadius.circular(100.0),
                                           child: Image(
-                                              width: 64,
-                                              height: 64,
+                                              width: 48,
+                                              height: 48,
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
                                                   courses[index]['image']!)),
                                         ),
                                       ),
                                     ),
-                                    addVerticalSpace(5),
+                                    addVerticalSpace(10),
                                     Text(
                                       courses[index]['coursename']!,
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       // convertName(categories[index]['categoryname']!),
-                                      style: const TextStyle(
-                                          color: Colors.black,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
                                           fontWeight: FontWeight.w900,
-                                          fontSize: 12),
+                                          fontSize: 10),
                                     )
                                   ],
                                 ),
