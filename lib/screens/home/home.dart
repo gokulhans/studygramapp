@@ -1,14 +1,16 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/components/sidebar/sidebar.dart';
-import 'package:studygram/screens/auth/login/login.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:studygram/screens/course/course.dart';
 import 'package:studygram/screens/semester/semester.dart';
 import 'package:studygram/screens/university/university.dart';
+import 'package:studygram/utils/color_constants.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/utils/widget_functions.dart';
@@ -178,6 +180,130 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 child: Column(
                   children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          addVerticalSpace(10),
+                          SizedBox(
+                            height: 180,
+                            width: double.infinity,
+                            child: ListView(
+                              children: [
+                                CarouselSlider(
+                                  items: [
+                                    //1st Image of Slider
+                                    InkWell(
+                                      onTap: () {
+                                        // Get.to(
+                                        //     () => UserViewSingleStorePage(
+                                        //           title:
+                                        //               "6409743be18d2f772bf43804",
+                                        //         ),
+                                        //     arguments: [
+                                        //       // "6409b179b4eee0572655fef8",
+                                        //       // "nsah",
+                                        //       // "9:00 AM",
+                                        //       // "5:00 PM",
+                                        //       //  "data[index]['type']",
+                                        //       //         // data[index]['name'],
+                                        //       //         // data[index]['start'],
+                                        //       //         // data[index]['end']
+                                        //     ]);
+                                      },
+                                      child: Container(
+                                        height: 180,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          image: const DecorationImage(
+                                            image: NetworkImage(
+                                                "https://outq.vercel.app/image1.jpg"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        // Get.to(
+                                        //     () => UserViewSingleStorePage(
+                                        //           title:
+                                        //               "6409743be18d2f772bf43804",
+                                        //         ),
+                                        //     arguments: [
+                                        //       // "6409b179b4eee0572655fef8",
+                                        //       // "nsah",
+                                        //       // "9:00 AM",
+                                        //       // "5:00 PM",
+                                        //       //  "data[index]['type']",
+                                        //       //         // data[index]['name'],
+                                        //       //         // data[index]['start'],
+                                        //       //         // data[index]['end']
+                                        //     ]);
+                                      },
+                                      child: Container(
+                                        height: 180,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          image: const DecorationImage(
+                                            image: NetworkImage(
+                                                "https://outq.vercel.app/image2.jpg"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        // Get.to(() => UserViewSingleStorePage(
+                                        //       title: "64082ee0cd603a2fb02cdbc6",
+                                        //     ));
+                                        // // arguments: [
+                                        // //   "data[index]['type']",
+                                        // //   "data[index]['type']",
+                                        // //   "data[index]['type']",
+                                        // //   // data[index]['name'],
+                                        // //   // data[index]['start'],
+                                        // //   // data[index]['end']
+                                        // // ]);
+                                      },
+                                      child: Container(
+                                        height: 180,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          image: const DecorationImage(
+                                            image: NetworkImage(
+                                                "https://outq.vercel.app/image3.jpg"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  //Slider Container properties
+                                  options: CarouselOptions(
+                                    height: 180.0,
+                                    enlargeCenterPage: true,
+                                    autoPlay: true,
+                                    aspectRatio: 16 / 9,
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enableInfiniteScroll: true,
+                                    autoPlayAnimationDuration:
+                                        const Duration(milliseconds: 800),
+                                    viewportFraction: 0.8,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(20),
                     Container(
                       color: Colors.white,
                       child: Column(children: <Widget>[

@@ -89,12 +89,31 @@ class _SublistState extends State<Sublist> {
                       return Card(
                         elevation: 2,
                         child: ListTile(
-                          leading: Container(
-                            alignment: Alignment.center,
-                            width: 48,
-                            child: Icon(
-                              Icons.notifications_active,
-                              color: Colors.green,
+                          // leading: Container(
+                          //   alignment: Alignment.center,
+                          //   width: 48,
+                          //   child: Icon(
+                          //     Icons.notifications_active,
+                          //     color: Colors.green,
+                          //   ),
+                          // ),
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              width: 70,
+                              // height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Image(
+                                width: 70,
+                                // height: 120,
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  // "https://i3.ytimg.com/vi/${ytid}/hqdefault.jpg",
+                                  "https://i3.ytimg.com/vi/-UJCMfuFtSQ/hqdefault.jpg",
+                                ),
+                              ),
                             ),
                           ),
                           title: Text(

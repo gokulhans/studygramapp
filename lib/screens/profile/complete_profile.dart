@@ -23,6 +23,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
   List<Map<String, String>> courses = [];
   String selectedCourse = "";
   String selectedCourseName = "";
+  List<Map<String, String>> semesters = [];
+  String selectedSemester = "";
+  String selectedSemesterName = "";
   String UserName = "";
 
   @override
@@ -36,6 +39,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String University = await pref.getString('universityname')!;
     String Course = await pref.getString('coursename')!;
+    String Semester = await pref.getString('semester')!;
     bool IsProfileCompletd = await pref.getBool('completeprofile')!;
     if (IsProfileCompletd) {
       fetchCourseData(
@@ -44,6 +48,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     setState(() {
       selectedTag = University;
       selectedCourse = Course;
+      selectedSemester = Semester;
     });
   }
 
@@ -92,6 +97,28 @@ class _CompleteProfileState extends State<CompleteProfile> {
     }
   }
 
+  Future<void> fetchSemesterData() async {
+    try {
+      final response = await http.get(Uri.parse('${apidomain}semester'));
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body) as List<dynamic>;
+        print(jsonData);
+        setState(() {
+          courses = jsonData
+              .map<Map<String, String>>((data) => {
+                    'semestername': data['coursename'].toString(),
+                    'fsemestername': data['fcoursename'].toString(),
+                  })
+              .toList();
+        });
+      } else {
+        print('Failed to fetch course data. Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to fetch course data. Error: $e');
+    }
+  }
+
   void handleTagSelection(String selectedTag, String selectedTagName) {
     setState(() {
       this.selectedTag = selectedTag;
@@ -105,6 +132,19 @@ class _CompleteProfileState extends State<CompleteProfile> {
   }
 
   void handleCourseSelection(String selectedCourse, String selectedCourseName) {
+    setState(() {
+      this.selectedCourse = selectedCourse;
+      this.selectedCourseName = selectedCourseName;
+    });
+
+    final selectedCourseData = courses.firstWhere(
+      (course) => course['coursename'] == selectedCourse,
+    );
+    print('Selected Course code: ${selectedCourseData['fcoursename']}');
+  }
+
+  void handleSemesterSelection(
+      String selectedCourse, String selectedCourseName) {
     setState(() {
       this.selectedCourse = selectedCourse;
       this.selectedCourseName = selectedCourseName;
