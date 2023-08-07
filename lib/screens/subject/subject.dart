@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/screens/files/file.dart';
 import 'package:studygram/screens/module/module.dart';
 import 'package:studygram/screens/video/videolist.dart';
@@ -42,12 +43,14 @@ class _SublistState extends State<Sublist> {
   Future<List<Map<String, dynamic>>> fetchCourses() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var university = await pref.getString('university');
-    print(university);
-    final response = await http.get(Uri.parse(
-        '${apidomain}subject/${university}/${argumentData['course']}/${argumentData['semester']}'));
-    print({
-      "${apidomain}subject/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}"
-    });
+    final response;
+    if (argumentData['category'] == 'videos') {
+      response = await http.get(Uri.parse(
+          '${apidomain}videosubject/${university}/${argumentData['course']}/${argumentData['semester']}'));
+    } else {
+      response = await http.get(Uri.parse(
+          '${apidomain}subject/${university}/${argumentData['course']}/${argumentData['semester']}'));
+    }
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       List<Map<String, dynamic>> subjects = data
@@ -75,12 +78,7 @@ class _SublistState extends State<Sublist> {
           future: fetchCourses(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SpinKitCircle(
-                  size: 80,
-                  color: Colors.green,
-                ),
-              );
+              return LoadingIndicator(progress: 100);
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
@@ -98,78 +96,103 @@ class _SublistState extends State<Sublist> {
                     physics: const BouncingScrollPhysics(),
                     itemCount: subjects.length,
                     itemBuilder: (context, i) {
-                      return Container(
-                        height: 60,
-                        margin: const EdgeInsets.only(
-                          left: 12,
-                          right: 12,
-                          top: 6,
-                          bottom: 6,
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.white30,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: const [
-                              // Shadow for top-left corner
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(1, 1),
-                                blurRadius: 2,
-                                spreadRadius: 0.3,
-                              ),
-                              // Shadow for bottom-right corner
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(-1, -1),
-                                blurRadius: 1,
-                                spreadRadius: 3,
-                              ),
-                            ]),
-                        child: Center(
-                          child: TextButton(
-                              child: Text(
-                                subjects[i]['subjectname'],
-                                // "English",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                      return TextButton(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 3, right: 3),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  offset: Offset(0.5, 0.5),
+                                  blurRadius: 1,
+                                  spreadRadius: 0.3,
                                 ),
-                              ),
-                              onPressed: () {
-                                if (argumentData['category'] == 'videos') {
-                                  Get.to(
-                                      () => const Videolist(
-                                            title: "",
+                                // BoxShadow(
+                                //   color: Colors.grey,
+                                //   offset: Offset(-1, -1),
+                                //   blurRadius: 2,
+                                //   spreadRadius: 0.3,
+                                // ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 10, right: 5, top: 5, bottom: 5),
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Container(
+                                        width: 40,
+                                        child: Center(
+                                          child: Icon(
+                                            argumentData['category'] == 'videos'
+                                                ? Icons.video_collection
+                                                : Icons.file_copy,
+                                            color: Colors.green,
+                                            size: 26,
                                           ),
-                                      arguments: {
-                                        'university':
-                                            argumentData['university'],
-                                        'course': argumentData['course'],
-                                        'semester': argumentData['semester'],
-                                        'subject': subjects[i]['fsubjectname'],
-                                        // 'module': argumentData['module'],
-                                        'category': argumentData['category'],
-                                      });
-                                } else {
-                                  Get.to(
-                                      () => const File(
-                                            title: "",
-                                          ),
-                                      arguments: {
-                                        'university':
-                                            argumentData['university'],
-                                        'course': argumentData['course'],
-                                        'semester': argumentData['semester'],
-                                        'subject': subjects[i]['fsubjectname'],
-                                        // 'module': argumentData['module'],
-                                        'category': argumentData['category'],
-                                      });
-                                }
-                              }),
-                        ),
-                      );
+                                        )),
+                                  ),
+                                  title: Text(
+                                    subjects[i]['subjectname']!,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          // Add any other desired widgets here
+                                          Text("${argumentData["semester"]}"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.green,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: () {
+                            if (argumentData['category'] == 'videos') {
+                              Get.to(
+                                  () => const Videolist(
+                                        title: "",
+                                      ),
+                                  arguments: {
+                                    'university': argumentData['university'],
+                                    'course': argumentData['course'],
+                                    'semester': argumentData['semester'],
+                                    'subject': subjects[i]['fsubjectname'],
+                                    // 'module': argumentData['module'],
+                                    'category': argumentData['category'],
+                                  });
+                            } else {
+                              Get.to(
+                                  () => const File(
+                                        title: "",
+                                      ),
+                                  arguments: {
+                                    'university': argumentData['university'],
+                                    'course': argumentData['course'],
+                                    'semester': argumentData['semester'],
+                                    'subject': subjects[i]['fsubjectname'],
+                                    // 'module': argumentData['module'],
+                                    'category': argumentData['category'],
+                                  });
+                            }
+                          });
                     }),
               );
             } else {

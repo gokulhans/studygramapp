@@ -5,20 +5,20 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:studygram/screens/video/videonew.dart';
+import 'package:studygram/screens/video/video.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/widget_functions.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
-class VideoPage extends StatefulWidget {
-  VideoPage({Key? key}) : super(key: key);
+class VideoPageNew extends StatefulWidget {
+  VideoPageNew({Key? key}) : super(key: key);
 
   @override
-  State<VideoPage> createState() => _VideoPageState();
+  State<VideoPageNew> createState() => _VideoPageNewState();
 }
 
-class _VideoPageState extends State<VideoPage> {
+class _VideoPageNewState extends State<VideoPageNew> {
   var argumentData = Get.arguments;
   Future<List<Map<String, dynamic>>> fetchCourses() async {
     final response = await http.get(Uri.parse(
@@ -153,7 +153,7 @@ class _VideoPageState extends State<VideoPage> {
                             onPressed: () async {
                               var link = YoutubePlayer.convertUrlToId(
                                   videos[i]['videolink']);
-                              Get.off(() => VideoPageNew(), arguments: {
+                              Get.off(() => VideoPage(), arguments: {
                                 "link": link,
                                 "title": videos[i]['videoname'],
                                 "subject": argumentData['subject'],

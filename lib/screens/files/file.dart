@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/screens/files/webview.dart';
@@ -70,12 +71,7 @@ class _SublistState extends State<Sublist> {
           future: fetchCourses(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SpinKitCircle(
-                  size: 80,
-                  color: Colors.green,
-                ),
-              );
+              return LoadingIndicator(progress: 100);
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
@@ -108,55 +104,108 @@ class _SublistState extends State<Sublist> {
                           // Get.to(() => const WebViewApp());
                         },
                         child: Container(
-                          height: 60,
-                          margin: const EdgeInsets.only(
-                            left: 12,
-                            right: 12,
-                          ),
+                          margin: const EdgeInsets.only(left: 3, right: 3),
                           decoration: BoxDecoration(
-                              color: Colors.white30,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: const [
-                                // Shadow for top-left corner
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(1, 1),
-                                  blurRadius: 2,
-                                  spreadRadius: 0.3,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                offset: Offset(0.5, 0.5),
+                                blurRadius: 1,
+                                spreadRadius: 0.3,
+                              ),
+                              // BoxShadow(
+                              //   color: Colors.grey,
+                              //   offset: Offset(-1, -1),
+                              //   blurRadius: 2,
+                              //   spreadRadius: 0.3,
+                              // ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                contentPadding: const EdgeInsets.only(
+                                    left: 15, right: 10, top: 5, bottom: 5),
+                                trailing: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Container(
+                                      width: 40,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.file_download,
+                                          color: Colors.green,
+                                        ),
+                                      )),
                                 ),
-                                // Shadow for bottom-right corner
-                                BoxShadow(
-                                  color: Colors.white,
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  spreadRadius: 3,
-                                ),
-                              ]),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  // snapshot.data[i].name,
-                                  docs[i]['docname'],
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 10),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.download,
-                                    size: 18,
+                                title: Text(
+                                  docs[i]['docname']!,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis
                                   ),
                                 ),
-                              ],
-                            ),
+                                // trailing: const Icon(
+                                //   Icons.download,
+                                //   size: 18,
+                                // ),
+                              ),
+                            ],
                           ),
                         ),
+
+                        // Container(
+                        //   height: 60,
+                        //   margin: const EdgeInsets.only(
+                        //     left: 12,
+                        //     right: 12,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.white30,
+                        //       borderRadius: BorderRadius.circular(50),
+                        //       boxShadow: const [
+                        //         // Shadow for top-left corner
+                        //         BoxShadow(
+                        //           color: Colors.grey,
+                        //           offset: Offset(1, 1),
+                        //           blurRadius: 2,
+                        //           spreadRadius: 0.3,
+                        //         ),
+                        //         // Shadow for bottom-right corner
+                        //         BoxShadow(
+                        //           color: Colors.white,
+                        //           offset: Offset(-1, -1),
+                        //           blurRadius: 1,
+                        //           spreadRadius: 3,
+                        //         ),
+                        //       ]),
+                        //   child: Center(
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         Text(
+                        //           // snapshot.data[i].name,
+                        //           docs[i]['docname'],
+                        //           textAlign: TextAlign.center,
+                        //           overflow: TextOverflow.ellipsis,
+                        //           maxLines: 2,
+                        //           style: const TextStyle(
+                        //               fontWeight: FontWeight.w800,
+                        //               fontSize: 10),
+                        //         ),
+                        //         IconButton(
+                        //           onPressed: () {},
+                        //           icon: const Icon(
+                        //             Icons.download,
+                        //             size: 18,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       );
                     }),
               );

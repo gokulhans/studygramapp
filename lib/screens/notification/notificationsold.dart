@@ -43,6 +43,7 @@ class _SublistState extends State<Sublist> {
           .map((item) => {
                 '_id': item['_id'],
                 'title': item['title'],
+                'image': item['image'],
                 'desc': item['desc'],
                 'university': item['university'],
                 'link': item['link'],
@@ -110,8 +111,7 @@ class _SublistState extends State<Sublist> {
                                 // height: 120,
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  // "https://i3.ytimg.com/vi/${ytid}/hqdefault.jpg",
-                                  "https://i3.ytimg.com/vi/-UJCMfuFtSQ/hqdefault.jpg",
+                                  "${notificationsold[i]['image']}",
                                 ),
                               ),
                             ),

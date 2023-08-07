@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:studygram/components/indicator/progress_indicator.dart';
 import 'package:studygram/screens/video/video.dart';
 import 'package:studygram/utils/constants.dart';
 import 'package:studygram/utils/widget_functions.dart';
@@ -71,11 +72,8 @@ class _SublistState extends State<Sublist> {
           future: fetchCourses(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SpinKitCircle(
-                  size: 80,
-                  color: Colors.green,
-                ),
+              return LoadingIndicator(
+                progress: 100,
               );
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
@@ -119,24 +117,23 @@ class _SublistState extends State<Sublist> {
                           right: 3,
                         ),
                         decoration: BoxDecoration(
-                            color: Colors.white30,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              // Shadow for top-left corner
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(1, 1),
-                                blurRadius: 2,
-                                spreadRadius: 0.3,
-                              ),
-                              // Shadow for bottom-right corner
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(-1, -1),
-                                blurRadius: 1,
-                                spreadRadius: 3,
-                              ),
-                            ]),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              offset: Offset(0.5, 0.5),
+                              blurRadius: 1,
+                              spreadRadius: 0.3,
+                            ),
+                            // BoxShadow(
+                            //   color: Colors.grey,
+                            //   offset: Offset(-1, -1),
+                            //   blurRadius: 2,
+                            //   spreadRadius: 0.3,
+                            // ),
+                          ],
+                        ),
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(5),
                           leading: ClipRRect(
@@ -156,7 +153,13 @@ class _SublistState extends State<Sublist> {
                               ),
                             ),
                           ),
-                          title: Text(videos[i]['videoname']),
+                          title: Text(
+                            videos[i]['videoname'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

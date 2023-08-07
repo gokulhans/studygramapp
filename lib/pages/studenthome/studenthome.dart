@@ -77,7 +77,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     useruniversity = prefs.getString('universityname')!;
     usercourse = prefs.getString('coursename')!;
-    isCompletedProfile = prefs.getBool('completedprofile')!;
+    isCompletedProfile = prefs.getBool('completeprofile')!;
   }
 
   @override

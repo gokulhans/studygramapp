@@ -28,19 +28,19 @@ class AppBarMain extends StatelessWidget {
         style: TextStyle(
             color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
       ),
-      actions: [
-        IconButton(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          icon: const Icon(
-            FontAwesomeIcons.graduationCap,
-            size: 20,
-            color: Colors.green,
-          ),
-          onPressed: () async {
-            Get.to(const StudentHome());
-          },
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     padding: const EdgeInsets.symmetric(horizontal: 24),
+      //     icon: const Icon(
+      //       FontAwesomeIcons.graduationCap,
+      //       size: 20,
+      //       color: Colors.green,
+      //     ),
+      //     onPressed: () async {
+      //       Get.to(const StudentHome());
+      //     },
+      //   ),
+      // ],
       iconTheme: const IconThemeData(color: Colors.green),
     );
   }
