@@ -39,11 +39,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String University = await pref.getString('universityname')!;
     String Course = await pref.getString('coursename')!;
-    String Semester = await pref.getString('semester')!;
+    String Semester = await pref.getString('semestername')!;
     bool IsProfileCompletd = await pref.getBool('completeprofile')!;
     if (IsProfileCompletd) {
       fetchCourseData(
           University); // Fetch data from API when the widget is initialized
+      fetchSemesterData();
     }
     setState(() {
       selectedTag = University;
@@ -104,18 +105,18 @@ class _CompleteProfileState extends State<CompleteProfile> {
         final jsonData = json.decode(response.body) as List<dynamic>;
         print(jsonData);
         setState(() {
-          courses = jsonData
+          semesters = jsonData
               .map<Map<String, String>>((data) => {
-                    'semestername': data['coursename'].toString(),
-                    'fsemestername': data['fcoursename'].toString(),
+                    'semestername': data['semestername'].toString(),
+                    'fsemestername': data['fsemestername'].toString(),
                   })
               .toList();
         });
       } else {
-        print('Failed to fetch course data. Error: ${response.statusCode}');
+        print('Failed to fetch Semester data. Error: ${response.statusCode}');
       }
     } catch (e) {
-      print('Failed to fetch course data. Error: $e');
+      print('Failed to fetch Semester data. Error: $e');
     }
   }
 
@@ -144,16 +145,16 @@ class _CompleteProfileState extends State<CompleteProfile> {
   }
 
   void handleSemesterSelection(
-      String selectedCourse, String selectedCourseName) {
+      String selectedSemester, String selectedSemesterName) {
     setState(() {
-      this.selectedCourse = selectedCourse;
-      this.selectedCourseName = selectedCourseName;
+      this.selectedSemester = selectedSemester;
+      this.selectedSemesterName = selectedSemesterName;
     });
 
-    final selectedCourseData = courses.firstWhere(
-      (course) => course['coursename'] == selectedCourse,
+    final selectedSemesterData = semesters.firstWhere(
+      (semester) => semester['semestername'] == selectedSemester,
     );
-    print('Selected Course code: ${selectedCourseData['fcoursename']}');
+    print('Selected Semester code: ${selectedSemesterData['fsemestername']}');
   }
 
   @override
@@ -283,6 +284,39 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         selectedColor: Colors.green,
                         onSelected: (isSelected) {
                           handleCourseSelection(courseName, fcourseName);
+                          fetchSemesterData();
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Select Semester:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 2.0,
+                    children: semesters.map((semester) {
+                      final String semesterName = semester['semestername']!;
+                      final String fsemesterName = semester['fsemestername']!;
+                      return ChoiceChip(
+                        label: Text(
+                          semesterName,
+                          style: TextStyle(
+                            color: selectedSemester == semesterName
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        selected: selectedSemester == semesterName,
+                        selectedColor: Colors.green,
+                        onSelected: (isSelected) {
+                          handleSemesterSelection(semesterName, fsemesterName);
                         },
                       );
                     }).toList(),
@@ -302,8 +336,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
                               await SharedPreferences.getInstance();
                           await pref.setString('university', selectedTagName);
                           await pref.setString('course', selectedCourseName);
+                          await pref.setString(
+                              'semester', selectedSemesterName);
                           await pref.setString('coursename', selectedCourse);
                           await pref.setString('universityname', selectedTag);
+                          await pref.setString('semestername', selectedSemester);
                           // await pref.setString('username', UserName);
                           await pref.setBool('completeprofile', true);
                           var msgclr = Colors.green[400];

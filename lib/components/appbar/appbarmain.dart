@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:studygram/pages/studenthome/studenthome.dart';
 import 'package:studygram/screens/profile/complete_profile.dart';
 import 'package:studygram/screens/profile/profile.dart';
 
 class AppBarMain extends StatelessWidget {
   const AppBarMain({super.key});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       systemOverlayStyle: const SystemUiOverlayStyle(
@@ -22,22 +24,23 @@ class AppBarMain extends StatelessWidget {
       centerTitle: true,
       // automaticallyImplyLeading: false,
       title: const Text(
-        "JUSTPASS",
+        "JustPass",
         style: TextStyle(
             color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
       ),
-      // actions: [
-      //   IconButton(
-      //     padding: const EdgeInsets.symmetric(horizontal: 24),
-      //     icon: const Icon(
-      //       Icons.person,
-      //       color: Colors.green,
-      //     ),
-      //     onPressed: () async {
-      //       Get.to(const CompleteProfile());
-      //     },
-      //   ),
-      // ],
+      actions: [
+        IconButton(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          icon: const Icon(
+            FontAwesomeIcons.graduationCap,
+            size: 20,
+            color: Colors.green,
+          ),
+          onPressed: () async {
+            Get.to(const StudentHome());
+          },
+        ),
+      ],
       iconTheme: const IconThemeData(color: Colors.green),
     );
   }

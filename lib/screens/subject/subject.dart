@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/screens/files/file.dart';
 import 'package:studygram/screens/module/module.dart';
 import 'package:studygram/screens/video/videolist.dart';
@@ -39,11 +40,14 @@ class Sublist extends StatefulWidget {
 class _SublistState extends State<Sublist> {
   var argumentData = Get.arguments;
   Future<List<Map<String, dynamic>>> fetchCourses() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var university = await pref.getString('university');
+    print(university);
     final response = await http.get(Uri.parse(
-        '${apidomain}subject/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}'));
-    // print({
-    //   "${apidomain}subject/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}"
-    // });
+        '${apidomain}subject/${university}/${argumentData['course']}/${argumentData['semester']}'));
+    print({
+      "${apidomain}subject/${argumentData['university']}/${argumentData['course']}/${argumentData['semester']}"
+    });
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       List<Map<String, dynamic>> subjects = data

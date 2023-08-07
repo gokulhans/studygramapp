@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studygram/screens/category/category.dart';
 import 'package:http/http.dart' as http;
 import 'package:studygram/screens/semester/semester.dart';
@@ -130,13 +131,17 @@ class _SublistState extends State<Sublist> {
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
+                                var university =
+                                    await pref.getString('university');
                                 Get.to(
                                     () => const Subject(
                                           title: "",
                                         ),
                                     arguments: {
-                                      'university': argumentData['university'],
+                                      'university': university,
                                       'course': argumentData['course'],
                                       'category': argumentData['category'],
                                       'semester': semesters[i]['fsemestername'],
